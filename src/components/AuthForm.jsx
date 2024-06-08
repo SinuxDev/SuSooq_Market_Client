@@ -1,10 +1,29 @@
-import { Button, Form, Input } from "antd";
+import { Button, Form, Input, message } from "antd";
+import { registerUser, loginUser } from "../api/auth";
 
+import { useState } from "react";
 import PropTypes from "prop-types";
+import { Link } from "react-router-dom";
 
 const AuthForm = ({ isLogin }) => {
+  const [submitting, setSubmitting] = useState(false);
   const handleOnFinish = async (values) => {
-    console.log(values);
+    setSubmitting(true);
+    try {
+      const response = await (isLogin
+        ? loginUser(values)
+        : registerUser(values));
+
+      if (response.isSuccess) {
+        message.success(response.message);
+        localStorage.setItem("token", response.token);
+      } else {
+        throw new Error(response.message);
+      }
+    } catch (err) {
+      message.error(err.message);
+    }
+    setSubmitting(false);
   };
 
   return (
@@ -74,10 +93,40 @@ const AuthForm = ({ isLogin }) => {
             <Input.Password placeholder="password...."></Input.Password>
           </Form.Item>
           <Form.Item>
-            <Button type="primary" htmlType="submit" className="w-full">
-              {isLogin ? "Login" : "Register"}
+            <Button
+              type="primary"
+              htmlType="submit"
+              className="w-full"
+              disabled={submitting}
+            >
+              {isLogin && !submitting && "Login"}
+              {!isLogin && !submitting && "Register"}
+              {submitting && "Submitting..."}
             </Button>
           </Form.Item>
+          <p>
+            {isLogin ? (
+              <p>
+                Don't have an account ?{" "}
+                <Link
+                  to={"/register"}
+                  className="font-medium text-blue-600 hover:text-blue-400"
+                >
+                  Register Here
+                </Link>
+              </p>
+            ) : (
+              <p>
+                Already have an account ?{" "}
+                <Link
+                  to={"/login"}
+                  className="font-medium text-blue-600 hover:text-blue-400"
+                >
+                  Login Here
+                </Link>
+              </p>
+            )}
+          </p>
         </Form>
       </div>
     </section>
