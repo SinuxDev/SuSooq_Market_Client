@@ -29,6 +29,10 @@ const AuthForm = ({ isLogin }) => {
                   required: true,
                   message: "Please input your name!",
                 },
+                {
+                  min: 3,
+                  message: "Name must be at least 3 characters long",
+                },
               ]}
               hasFeedback
             >
@@ -59,6 +63,10 @@ const AuthForm = ({ isLogin }) => {
               {
                 required: true,
                 message: "Please input your password!",
+              },
+              {
+                min: 5,
+                message: "Password must be at least 5 characters long",
               },
             ]}
             hasFeedback
