@@ -3,10 +3,12 @@ import { registerUser, loginUser } from "../api/auth";
 
 import { useState } from "react";
 import PropTypes from "prop-types";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const AuthForm = ({ isLogin }) => {
   const [submitting, setSubmitting] = useState(false);
+  const navigate = useNavigate();
+
   const handleOnFinish = async (values) => {
     setSubmitting(true);
     try {
@@ -17,6 +19,7 @@ const AuthForm = ({ isLogin }) => {
       if (response.isSuccess) {
         message.success(response.message);
         localStorage.setItem("token", response.token);
+        navigate(isLogin ? "/" : "/login");
       } else {
         throw new Error(response.message);
       }
