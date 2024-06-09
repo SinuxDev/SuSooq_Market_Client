@@ -107,7 +107,7 @@ const AuthForm = ({ isLogin }) => {
           <p>
             {isLogin ? (
               <p>
-                Don't have an account ?{" "}
+                Do not have an account ?{" "}
                 <Link
                   to={"/register"}
                   className="font-medium text-blue-600 hover:text-blue-400"
