@@ -25,3 +25,16 @@ export const loginUser = async (payload) => {
     return error.message;
   }
 };
+
+// check if user token is valid
+export const checkUserToken = async () => {
+  try {
+    const response = await axiosInstance.get("/checkUserToken", {
+      validateStatus: () => true,
+    });
+
+    return response.data;
+  } catch (error) {
+    return error.message;
+  }
+};
