@@ -4,9 +4,12 @@ import { registerUser, loginUser } from "../api/auth";
 import { useState } from "react";
 import PropTypes from "prop-types";
 import { Link, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { setUserId } from "../store/slices/userSlice";
 
 const AuthForm = ({ isLogin }) => {
   const [submitting, setSubmitting] = useState(false);
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const handleOnFinish = async (values) => {
@@ -18,7 +21,10 @@ const AuthForm = ({ isLogin }) => {
 
       if (response.isSuccess) {
         message.success(response.message);
+
         localStorage.setItem("token", response.token);
+        dispatch(setUserId(response.token));
+
         navigate(isLogin ? "/" : "/login");
       } else {
         throw new Error(response.message);
