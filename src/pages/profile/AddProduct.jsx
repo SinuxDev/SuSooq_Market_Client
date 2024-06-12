@@ -71,7 +71,12 @@ const AddProduct = () => {
   return (
     <section>
       <h1 className="text-2xl font-bold my-2">What you want to sales?</h1>
-      <Form layout="vertical">
+      <Form
+        layout="vertical"
+        onFinish={(values) => {
+          console.log(values);
+        }}
+      >
         <Form.Item
           name="product_name"
           label="Product Name"
