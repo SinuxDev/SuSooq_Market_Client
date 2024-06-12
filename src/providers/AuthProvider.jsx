@@ -1,11 +1,15 @@
 import { useEffect, useCallback } from "react";
 import { checkUserToken } from "../api/auth";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+
+import { setUser } from "../store/slices/userSlice";
 
 import PropTypes from "prop-types";
 
 const AuthProvider = ({ children }) => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleNavigate = useCallback(() => {
     navigate("/");
@@ -17,7 +21,7 @@ const AuthProvider = ({ children }) => {
         const response = await checkUserToken();
 
         if (response.isSuccess) {
-          //code
+          dispatch(setUser(response.userDoc));
         } else {
           handleNavigate();
           throw new Error(response.message);
@@ -28,7 +32,7 @@ const AuthProvider = ({ children }) => {
     };
 
     getCurrentUser();
-  }, [handleNavigate]);
+  }, [handleNavigate, dispatch]);
   return <section>{children}</section>;
 };
 
