@@ -5,7 +5,7 @@ import { useState } from "react";
 import PropTypes from "prop-types";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { setUserId } from "../store/slices/userSlice";
+import { setUser } from "../store/slices/userSlice";
 
 const AuthForm = ({ isLogin }) => {
   const [submitting, setSubmitting] = useState(false);
@@ -23,7 +23,7 @@ const AuthForm = ({ isLogin }) => {
         message.success(response.message);
 
         localStorage.setItem("token", response.token);
-        dispatch(setUserId(response.token));
+        dispatch(setUser(response.token));
 
         navigate(isLogin ? "/" : "/login");
       } else {
