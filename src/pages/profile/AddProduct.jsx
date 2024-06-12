@@ -1,7 +1,12 @@
-import { Button, Checkbox, Col, Form, Input, Row, Select } from "antd";
+import { Button, Checkbox, Col, Form, Input, Row, Select, message } from "antd";
+import PropTypes from "prop-types";
 const { TextArea } = Input;
 
-const AddProduct = () => {
+import { getSoldProducts } from "../../api/product";
+
+const AddProduct = ({ setActiveTabKey }) => {
+  const [form] = Form.useForm();
+
   const CatagoriesOptions = [
     {
       value: "electronics",
@@ -68,15 +73,25 @@ const AddProduct = () => {
     },
   ];
 
+  const handleOnFinish = async (values) => {
+    try {
+      const response = await getSoldProducts(values);
+      if (response.isSuccess) {
+        form.resetFields();
+        message.success(response.message);
+        setActiveTabKey("1");
+      } else {
+        throw new Error(response.message);
+      }
+    } catch (err) {
+      message.error(err.message);
+    }
+  };
+
   return (
     <section>
       <h1 className="text-2xl font-bold my-2">What you want to sales?</h1>
-      <Form
-        layout="vertical"
-        onFinish={(values) => {
-          console.log(values);
-        }}
-      >
+      <Form layout="vertical" onFinish={handleOnFinish} form={form}>
         <Form.Item
           name="product_name"
           label="Product Name"
@@ -179,6 +194,10 @@ const AddProduct = () => {
       </Form>
     </section>
   );
+};
+
+AddProduct.propTypes = {
+  setActiveTabKey: PropTypes.func,
 };
 
 export default AddProduct;

@@ -3,7 +3,10 @@ import Products from "./Products";
 import AddProduct from "./AddProduct";
 import General from "./General";
 
+import { useState } from "react";
+
 const Index = () => {
+  const [activeTabKey, setActiveTabKey] = useState("1");
   const items = [
     {
       key: "1",
@@ -13,7 +16,7 @@ const Index = () => {
     {
       key: "2",
       label: "Add Product",
-      children: <AddProduct />,
+      children: <AddProduct setActiveTabKey={setActiveTabKey} />,
     },
     {
       key: "3",
@@ -29,7 +32,12 @@ const Index = () => {
 
   return (
     <>
-      <Tabs defaultActiveKey="1" items={items} tabPosition="left" />
+      <Tabs
+        activeKey={activeTabKey}
+        onChange={(key) => setActiveTabKey(key)}
+        items={items}
+        tabPosition="left"
+      />
     </>
   );
 };
