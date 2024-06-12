@@ -1,6 +1,7 @@
 import { Tabs } from "antd";
 import Products from "./Products";
 import AddProduct from "./AddProduct";
+import General from "./General";
 
 const Index = () => {
   const items = [
@@ -21,8 +22,8 @@ const Index = () => {
     },
     {
       key: "4",
-      label: "Profile",
-      children: "Profile Content",
+      label: "General",
+      children: <General />,
     },
   ];
 
