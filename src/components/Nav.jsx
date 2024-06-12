@@ -4,13 +4,13 @@ import { useSelector } from "react-redux";
 import { UserIcon } from "@heroicons/react/24/solid";
 
 const Nav = () => {
-  const { userId } = useSelector((state) => state.reducer.user);
+  const { user } = useSelector((state) => state.reducer.user);
   return (
     <nav className="bg-blue-500 flex items-center justify-between text-white p-4">
       <Link className="font-bold text-2xl" to={"/"}>
         SuSooq.IO
       </Link>
-      {userId ? (
+      {user ? (
         <Link to={"/profile"} className=" px-2 py-1 flex items-end gap-1">
           {" "}
           <UserIcon width={25} /> Profile
