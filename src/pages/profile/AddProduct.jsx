@@ -7,7 +7,7 @@ import {
   getOldProduct,
   updateProducts,
 } from "../../api/product";
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 const AddProduct = ({
   setActiveTabKey,
@@ -16,6 +16,7 @@ const AddProduct = ({
   editProductId,
 }) => {
   const [form] = Form.useForm();
+  const [sellerId, setSellerId] = useState(null);
 
   const CatagoriesOptions = [
     {
@@ -88,6 +89,8 @@ const AddProduct = ({
       let response;
 
       if (editMode) {
+        values.seller_id = sellerId;
+        values.product_id = editProductId;
         response = await updateProducts(values);
       } else {
         response = await getSoldProducts(values);
@@ -112,8 +115,17 @@ const AddProduct = ({
       if (response.isSuccess) {
         message.success("Edit Mode on!!");
 
-        const { name, description, price, category, usedFor, status_details } =
-          response.product;
+        const {
+          name,
+          description,
+          price,
+          category,
+          usedFor,
+          status_details,
+          seller,
+        } = response.product;
+
+        setSellerId(seller);
 
         const modifiedProduct = {
           product_name: name,
