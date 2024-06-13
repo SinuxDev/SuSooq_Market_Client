@@ -40,5 +40,14 @@ export const getOldProduct = async (id) => {
 };
 
 // Update product
+export const updateProducts = async (payload) => {
+  try {
+    const response = await axiosInstance.put("/update-product", payload, {
+      validateStatus: () => true,
+    });
 
-export const updateProducts = async (payload) => {};
+    return response.data;
+  } catch (err) {
+    return err.message;
+  }
+};
