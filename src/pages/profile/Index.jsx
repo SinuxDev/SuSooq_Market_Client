@@ -7,8 +7,8 @@ import { useState, useEffect } from "react";
 
 const Index = () => {
   const [activeTabKey, setActiveTabKey] = useState("1");
-
   const [products, setProducts] = useState([]);
+  const [editMode, setEditMode] = useState(false);
 
   const getProducts = async () => {
     try {
@@ -33,7 +33,11 @@ const Index = () => {
       key: "1",
       label: "Products",
       children: (
-        <Products products={products} setActiveTabKey={setActiveTabKey} />
+        <Products
+          products={products}
+          setActiveTabKey={setActiveTabKey}
+          setEditMode={setEditMode}
+        />
       ),
     },
     {
@@ -43,6 +47,7 @@ const Index = () => {
         <AddProduct
           setActiveTabKey={setActiveTabKey}
           getProducts={getProducts}
+          editMode={editMode}
         />
       ),
     },
@@ -58,11 +63,16 @@ const Index = () => {
     },
   ];
 
+  const onChangeHandler = (key) => {
+    setActiveTabKey(key);
+    setEditMode(false);
+  };
+
   return (
     <>
       <Tabs
         activeKey={activeTabKey}
-        onChange={(key) => setActiveTabKey(key)}
+        onChange={(key) => onChangeHandler(key)}
         items={items}
         tabPosition="left"
         animated={false}
