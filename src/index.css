@@ -9,3 +9,7 @@
   box-sizing: border-box;
   font-family: "IBM Plex Mono", monospace !important;
 }
+
+.ant-tabs-nav-operations {
+  display: none !important;
+}
