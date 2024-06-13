@@ -4,7 +4,7 @@ const { TextArea } = Input;
 
 import { getSoldProducts } from "../../api/product";
 
-const AddProduct = ({ setActiveTabKey }) => {
+const AddProduct = ({ setActiveTabKey, getProducts }) => {
   const [form] = Form.useForm();
 
   const CatagoriesOptions = [
@@ -79,6 +79,7 @@ const AddProduct = ({ setActiveTabKey }) => {
       if (response.isSuccess) {
         form.resetFields();
         message.success(response.message);
+        getProducts();
         setActiveTabKey("1");
       } else {
         throw new Error(response.message);
@@ -198,6 +199,7 @@ const AddProduct = ({ setActiveTabKey }) => {
 
 AddProduct.propTypes = {
   setActiveTabKey: PropTypes.func,
+  getProducts: PropTypes.func,
 };
 
 export default AddProduct;
