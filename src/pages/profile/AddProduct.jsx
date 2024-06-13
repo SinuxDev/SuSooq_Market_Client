@@ -92,7 +92,17 @@ const AddProduct = ({ setActiveTabKey, getProducts }) => {
   return (
     <section>
       <h1 className="text-2xl font-bold my-2">What you want to sales?</h1>
-      <Form layout="vertical" onFinish={handleOnFinish} form={form}>
+      <Form
+        layout="vertical"
+        onFinish={handleOnFinish}
+        form={form}
+        initialValues={{
+          remember: false,
+          product_status: [],
+          product_category: "",
+        }}
+        autoComplete="off"
+      >
         <Form.Item
           name="product_name"
           label="Product Name"
@@ -164,7 +174,7 @@ const AddProduct = ({ setActiveTabKey, getProducts }) => {
               ]}
               hasFeedback
             >
-              <Select defaultValue={""} options={CatagoriesOptions} />
+              <Select options={CatagoriesOptions} />
             </Form.Item>
           </Col>
           <Col span={8}>
@@ -184,7 +194,7 @@ const AddProduct = ({ setActiveTabKey, getProducts }) => {
           </Col>
         </Row>
         <Form.Item name="product_status" label="Product Status">
-          <Checkbox.Group options={checkBoxOptions} defaultValue={""} />
+          <Checkbox.Group options={checkBoxOptions} />
         </Form.Item>
         <Form.Item>
           <Button type="primary" htmlType="submit" className="p-4">
