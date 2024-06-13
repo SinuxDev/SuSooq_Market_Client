@@ -2,9 +2,19 @@ import { Button, Checkbox, Col, Form, Input, Row, Select, message } from "antd";
 import PropTypes from "prop-types";
 const { TextArea } = Input;
 
-import { getSoldProducts } from "../../api/product";
+import {
+  getSoldProducts,
+  getOldProduct,
+  updateProducts,
+} from "../../api/product";
+import { useCallback, useEffect } from "react";
 
-const AddProduct = ({ setActiveTabKey, getProducts }) => {
+const AddProduct = ({
+  setActiveTabKey,
+  getProducts,
+  editMode,
+  editProductId,
+}) => {
   const [form] = Form.useForm();
 
   const CatagoriesOptions = [
@@ -75,7 +85,14 @@ const AddProduct = ({ setActiveTabKey, getProducts }) => {
 
   const handleOnFinish = async (values) => {
     try {
-      const response = await getSoldProducts(values);
+      let response;
+
+      if (editMode) {
+        response = await updateProducts(values);
+      } else {
+        response = await getSoldProducts(values);
+      }
+
       if (response.isSuccess) {
         form.resetFields();
         message.success(response.message);
@@ -89,9 +106,45 @@ const AddProduct = ({ setActiveTabKey, getProducts }) => {
     }
   };
 
+  const getOldProductDetails = useCallback(async () => {
+    try {
+      const response = await getOldProduct(editProductId);
+      if (response.isSuccess) {
+        message.success("Edit Mode on!!");
+
+        const { name, description, price, category, usedFor, status_details } =
+          response.product;
+
+        const modifiedProduct = {
+          product_name: name,
+          product_description: description,
+          product_price: price,
+          product_category: category,
+          product_used_for: usedFor,
+          product_status: status_details,
+        };
+
+        form.setFieldsValue(modifiedProduct);
+      }
+    } catch (err) {
+      message.error(err.message);
+    }
+  }, [editProductId, form]);
+
+  useEffect(() => {
+    if (editMode) {
+      getOldProductDetails();
+    } else {
+      form.resetFields();
+    }
+  }, [editMode, getOldProductDetails, form]);
+
   return (
     <section>
-      <h1 className="text-2xl font-bold my-2">What you want to sales?</h1>
+      <h1 className="text-2xl font-bold my-2">
+        {" "}
+        {editMode ? "Edit your products" : "What you want to sales?"}{" "}
+      </h1>
       <Form
         layout="vertical"
         onFinish={handleOnFinish}
@@ -198,8 +251,7 @@ const AddProduct = ({ setActiveTabKey, getProducts }) => {
         </Form.Item>
         <Form.Item>
           <Button type="primary" htmlType="submit" className="p-4">
-            {" "}
-            Sell Products{" "}
+            {editMode ? "Update Product" : "Add Product"}
           </Button>
         </Form.Item>
       </Form>
@@ -210,6 +262,8 @@ const AddProduct = ({ setActiveTabKey, getProducts }) => {
 AddProduct.propTypes = {
   setActiveTabKey: PropTypes.func,
   getProducts: PropTypes.func,
+  editMode: PropTypes.bool,
+  editProductId: PropTypes.any,
 };
 
 export default AddProduct;
