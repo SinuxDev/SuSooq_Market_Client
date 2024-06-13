@@ -1,8 +1,21 @@
 import PropTypes from "prop-types";
+import moment from "moment";
 
-const Products = ({ products }) => {
+const Products = ({
+  products,
+  setActiveTabKey,
+  setEditMode,
+  setEditProductId,
+}) => {
+  const editButtonHandler = (productId) => {
+    setEditProductId(productId);
+    setEditMode(true);
+    setActiveTabKey("2");
+  };
+
   return (
     <section>
+      <h1 className="text-3xl font-semibold my-2 text-center">Products List</h1>
       <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
         <table className="w-full text-sm text-left rtl:text-right text-gray-500 ">
           <thead className="text-xs text-gray-700 uppercase bg-gray-50 text-center ">
@@ -14,10 +27,10 @@ const Products = ({ products }) => {
                 Category
               </th>
               <th scope="col" className="px-6 py-3">
-                Status
+                Sell Date
               </th>
               <th scope="col" className="px-6 py-3">
-                Sell Date
+                Status
               </th>
               <th scope="col" className="px-6 py-3">
                 Action
@@ -41,6 +54,10 @@ const Products = ({ products }) => {
                     <td className="px-6 py-4"> {product.category} </td>
                     <td className="px-6 py-4">
                       {" "}
+                      {moment(product.createdAt).format("L")}
+                    </td>
+                    <td className="px-6 py-4">
+                      {" "}
                       {product.status === "pending" ? (
                         <span className="bg-yellow-400 text-xs p-1 rounded-md text-white">
                           {product.status}
@@ -52,13 +69,21 @@ const Products = ({ products }) => {
                         </span>
                       )}{" "}
                     </td>
-                    <td className="px-6 py-4"> {product.createdAt} </td>
                     <td className="px-6 py-4">
                       <button
                         type="button"
-                        className="font-medium text-blue-600  hover:underline"
+                        className="font-medium text-blue-600  hover:underline me-4"
+                        onClick={() => {
+                          editButtonHandler(product._id);
+                        }}
                       >
                         Edit
+                      </button>
+                      <button
+                        type="button"
+                        className="font-medium text-red-500  hover:underline"
+                      >
+                        Delete
                       </button>
                     </td>
                   </tr>
@@ -80,6 +105,9 @@ const Products = ({ products }) => {
 
 Products.propTypes = {
   products: PropTypes.any,
+  setActiveTabKey: PropTypes.func,
+  setEditMode: PropTypes.func,
+  setEditProductId: PropTypes.any,
 };
 
 export default Products;
