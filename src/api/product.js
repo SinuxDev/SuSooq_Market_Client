@@ -51,3 +51,16 @@ export const updateProducts = async (payload) => {
     return err.message;
   }
 };
+
+// Delete product
+export const deleteProduct = async (id) => {
+  try {
+    const response = await axiosInstance.delete(`/delete-product/${id}`, {
+      validateStatus: () => true,
+    });
+
+    return response.data;
+  } catch (err) {
+    return err.message;
+  }
+};
