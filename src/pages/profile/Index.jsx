@@ -38,7 +38,7 @@ const Index = () => {
     },
     {
       key: "2",
-      label: "Add Product",
+      label: "Manage Product",
       children: (
         <AddProduct
           setActiveTabKey={setActiveTabKey}
