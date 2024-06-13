@@ -32,7 +32,9 @@ const Index = () => {
     {
       key: "1",
       label: "Products",
-      children: <Products products={products} />,
+      children: (
+        <Products products={products} setActiveTabKey={setActiveTabKey} />
+      ),
     },
     {
       key: "2",
