@@ -12,3 +12,16 @@ export const getSoldProducts = async (payload) => {
     return err.message;
   }
 };
+
+// Get all products
+export const getAllProducts = async () => {
+  try {
+    const response = await axiosInstance.get("/products", {
+      validateStatus: () => true,
+    });
+
+    return response.data;
+  } catch (err) {
+    return err.message;
+  }
+};
