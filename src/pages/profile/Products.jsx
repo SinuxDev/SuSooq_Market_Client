@@ -1,16 +1,33 @@
 import PropTypes from "prop-types";
 import moment from "moment";
+import { deleteProduct } from "../../api/product";
+import { message } from "antd";
 
 const Products = ({
   products,
   setActiveTabKey,
   setEditMode,
   setEditProductId,
+  getProducts,
 }) => {
   const editButtonHandler = (productId) => {
     setEditProductId(productId);
     setEditMode(true);
     setActiveTabKey("2");
+  };
+
+  const deleteButtonHandler = async (product_id) => {
+    try {
+      const response = await deleteProduct(product_id);
+      if (response.isSuccess) {
+        message.success(response.message);
+        getProducts();
+      } else {
+        throw new Error(response.message);
+      }
+    } catch (err) {
+      message.error(err.message);
+    }
   };
 
   return (
@@ -82,6 +99,9 @@ const Products = ({
                       <button
                         type="button"
                         className="font-medium text-red-500  hover:underline"
+                        onClick={() => {
+                          deleteButtonHandler(product._id);
+                        }}
                       >
                         Delete
                       </button>
@@ -108,6 +128,7 @@ Products.propTypes = {
   setActiveTabKey: PropTypes.func,
   setEditMode: PropTypes.func,
   setEditProductId: PropTypes.any,
+  getProducts: PropTypes.any,
 };
 
 export default Products;
