@@ -6,7 +6,18 @@ const GetrefreshToken = () => {
 
 export const axiosInstance = axios.create({
   baseURL: `${import.meta.env.VITE_SERVER_URL}`,
-  headers: {
-    Authorization: `Bearer ${GetrefreshToken()}`,
-  },
 });
+
+axiosInstance.interceptors.request.use(
+  (config) => {
+    const token = GetrefreshToken();
+    if (token) {
+      config.headers["Authorization"] = `Bearer ${token}`;
+    }
+
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
