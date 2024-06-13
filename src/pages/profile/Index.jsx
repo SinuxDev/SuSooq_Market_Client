@@ -37,6 +37,7 @@ const Index = () => {
         onChange={(key) => setActiveTabKey(key)}
         items={items}
         tabPosition="left"
+        animated={false}
       />
     </>
   );
