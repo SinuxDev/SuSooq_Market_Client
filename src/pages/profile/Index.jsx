@@ -27,7 +27,7 @@ const Index = () => {
 
   useEffect(() => {
     getProducts();
-  }, [getProducts]);
+  }, [getProducts, activeTabKey]);
 
   const items = [
     {
@@ -39,6 +39,7 @@ const Index = () => {
           setActiveTabKey={setActiveTabKey}
           setEditMode={setEditMode}
           setEditProductId={setEditProductId}
+          getProducts={getProducts}
         />
       ),
     },
