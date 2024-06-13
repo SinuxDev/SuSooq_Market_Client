@@ -25,3 +25,20 @@ export const getAllProducts = async () => {
     return err.message;
   }
 };
+
+// Get single product
+export const getOldProduct = async (id) => {
+  try {
+    const response = await axiosInstance.get(`/product/${id}`, {
+      validateStatus: () => true,
+    });
+
+    return response.data;
+  } catch (err) {
+    return err.message;
+  }
+};
+
+// Update product
+
+export const updateProducts = async (payload) => {};
