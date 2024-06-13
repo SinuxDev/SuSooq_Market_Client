@@ -3,7 +3,7 @@ import Products from "./Products";
 import AddProduct from "./AddProduct";
 import General from "./General";
 import { getAllProducts } from "../../api/product";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 
 const Index = () => {
   const [activeTabKey, setActiveTabKey] = useState("1");
@@ -11,7 +11,7 @@ const Index = () => {
   const [editMode, setEditMode] = useState(false);
   const [editProductId, setEditProductId] = useState(null);
 
-  const getProducts = async () => {
+  const getProducts = useCallback(async () => {
     try {
       const response = await getAllProducts();
 
@@ -23,11 +23,11 @@ const Index = () => {
     } catch (err) {
       message.error(err.message);
     }
-  };
+  }, [setProducts]);
 
   useEffect(() => {
     getProducts();
-  }, []);
+  }, [getProducts]);
 
   const items = [
     {
