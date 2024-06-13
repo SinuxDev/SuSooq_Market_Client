@@ -9,6 +9,7 @@ const Index = () => {
   const [activeTabKey, setActiveTabKey] = useState("1");
   const [products, setProducts] = useState([]);
   const [editMode, setEditMode] = useState(false);
+  const [editProductId, setEditProductId] = useState(null);
 
   const getProducts = async () => {
     try {
@@ -37,6 +38,7 @@ const Index = () => {
           products={products}
           setActiveTabKey={setActiveTabKey}
           setEditMode={setEditMode}
+          setEditProductId={setEditProductId}
         />
       ),
     },
@@ -48,6 +50,7 @@ const Index = () => {
           setActiveTabKey={setActiveTabKey}
           getProducts={getProducts}
           editMode={editMode}
+          editProductId={editProductId}
         />
       ),
     },
