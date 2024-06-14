@@ -2,6 +2,7 @@ import PropTypes from "prop-types";
 import ProductForm from "../../components/ProductForm";
 import { Tabs } from "antd";
 import { useState } from "react";
+import Upload from "../../components/Upload";
 
 const ManageProduct = ({
   setActiveTabKey,
@@ -24,11 +25,18 @@ const ManageProduct = ({
         />
       ),
     },
-    {
-      key: "2",
-      label: "Product Images",
-      children: <h1>hello </h1>,
-    },
+    editMode
+      ? {
+          key: "2",
+          label: "Product Images",
+          children: (
+            <Upload
+              editProductId={editProductId}
+              setActiveTabKey={setActiveTabKey}
+            />
+          ),
+        }
+      : null,
   ];
 
   const onChangeHandler = (key) => {
