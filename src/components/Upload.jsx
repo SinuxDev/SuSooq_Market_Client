@@ -43,6 +43,8 @@ const Upload = ({ editProductId, setActiveTabKey }) => {
       formData.append("product_images", productImages[i]);
     }
 
+    formData.append("product_id", editProductId);
+
     try {
       const response = await uploadProductImages(formData);
       if (response.isSuccess) {
