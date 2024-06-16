@@ -64,3 +64,16 @@ export const deleteProduct = async (id) => {
     return err.message;
   }
 };
+
+// Upload product images
+export const uploadProductImages = async (formData) => {
+  try {
+    const response = await axiosInstance.post("/upload-images", formData, {
+      validateStatus: () => true,
+    });
+
+    return response.data;
+  } catch (err) {
+    return err.message;
+  }
+};
