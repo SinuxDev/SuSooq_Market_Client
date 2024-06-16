@@ -1,13 +1,38 @@
 import PropTypes from "prop-types";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { TrashIcon } from "@heroicons/react/24/solid";
-import { uploadProductImages } from "../api/product";
+import {
+  deleteProductImages,
+  getProductImages,
+  uploadProductImages,
+} from "../api/product";
 import { message } from "antd";
 
 const Upload = ({ editProductId, setActiveTabKey }) => {
   const [previewImg, setPreviewImg] = useState([]);
   const [productImages, setProductImages] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [savedImages, setSavedImages] = useState([]);
+
+  const getSavedImages = async (product_id) => {
+    try {
+      const response = await getProductImages(product_id);
+
+      if (response.isSuccess) {
+        setSavedImages(response.SavedImages.images);
+      } else {
+        throw new Error(response.message);
+      }
+    } catch (err) {
+      message.error(err.message);
+    }
+  };
+
+  useEffect(() => {
+    if (editProductId) {
+      getSavedImages(editProductId);
+    }
+  }, [editProductId]);
 
   const onChangeHandler = (event) => {
     const selectedImages = event.target.files;
@@ -61,11 +86,56 @@ const Upload = ({ editProductId, setActiveTabKey }) => {
     setIsLoading(false);
   };
 
+  const savedImagesDeleteHandler = async (img) => {
+    setSavedImages((prev) => prev.filter((e) => e !== img));
+
+    const encodedImg = encodeURIComponent(img);
+
+    try {
+      const response = await deleteProductImages({
+        product_id: editProductId,
+        imgToDelete: encodedImg,
+      });
+      if (response.isSuccess) {
+        message.success(response.message);
+      } else {
+        throw new Error(response.message);
+      }
+    } catch (err) {
+      message.error(err.message);
+    }
+  };
+
   return (
     <section>
-      <h1 className="text-2xl font-bold mb-4">
+      <h1 className="text-2xl font-bold mb-4 text-blue-600">
         Upload your product images here
       </h1>
+      <div className="mt-2">
+        <h1 className="text-base font-medium mb-5">Saved Image in Cloud</h1>
+        {savedImages.length > 0 ? (
+          <div className="flex gap-2 mb-6">
+            {savedImages.map((e) => (
+              <div key={e} className="basis-1/6 h-32 relative mx-1">
+                <img
+                  src={e}
+                  alt={e}
+                  className="w-full h-full object-cover rounded-md hover:translate-x-1 hover:translate-y-1 cursor-pointer transition-transform duration-300 ease-in-out shadow-2xl"
+                />
+                <TrashIcon
+                  width={20}
+                  height={20}
+                  className="absolute z-20 bottom-4 right-3 text-red-600 cursor-pointer"
+                  onClick={() => savedImagesDeleteHandler(e)}
+                />
+              </div>
+            ))}
+          </div>
+        ) : (
+          <p className="text-red-600 text-xl mb-2">No image found</p>
+        )}
+      </div>
+      <hr />
       <form
         method="POST"
         encType="multipart/form-data"
