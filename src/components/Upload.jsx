@@ -1,12 +1,16 @@
 import PropTypes from "prop-types";
 import { useState } from "react";
 import { TrashIcon } from "@heroicons/react/24/solid";
+import { uploadProductImages } from "../api/product";
+import { message } from "antd";
 
 const Upload = ({ editProductId, setActiveTabKey }) => {
   const [previewImg, setPreviewImg] = useState([]);
+  const [productImages, setProductImages] = useState([]);
 
   const onChangeHandler = (event) => {
     const selectedImages = event.target.files;
+    setProductImages(selectedImages);
     const convertedImages = Array.from(selectedImages);
 
     const previewImgArray = convertedImages.map((image) => {
@@ -17,8 +21,39 @@ const Upload = ({ editProductId, setActiveTabKey }) => {
   };
 
   const deleteHandler = (img) => {
-    setPreviewImg(previewImg.filter((image) => image !== img));
-    URL.revokeObjectURL(img);
+    const indexToDelete = previewImg.findIndex((e) => e === img);
+
+    if (indexToDelete !== -1) {
+      const updatedSelectedImages = [...productImages];
+      updatedSelectedImages.splice(indexToDelete, 1);
+
+      setProductImages(updatedSelectedImages);
+
+      setPreviewImg(previewImg.filter((image) => image !== img));
+      URL.revokeObjectURL(img);
+    }
+  };
+
+  const submitHandler = async (event) => {
+    event.preventDefault();
+
+    const formData = new FormData();
+
+    for (let i = 0; i < productImages.length; i++) {
+      formData.append("product_images", productImages[i]);
+    }
+
+    try {
+      const response = await uploadProductImages(formData);
+      if (response.isSuccess) {
+        message.success(response.message);
+        setActiveTabKey("1");
+      } else {
+        throw new Error(response.message);
+      }
+    } catch (err) {
+      message.error(err.message);
+    }
   };
 
   return (
@@ -26,7 +61,11 @@ const Upload = ({ editProductId, setActiveTabKey }) => {
       <h1 className="text-2xl font-bold mb-4">
         Upload your product images here
       </h1>
-      <form method="POST" encType="multipart/form-data">
+      <form
+        method="POST"
+        encType="multipart/form-data"
+        onSubmit={submitHandler}
+      >
         <div className="flex flex-col items-start w-full">
           <label
             htmlFor="upload"
