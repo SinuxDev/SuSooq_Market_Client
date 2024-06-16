@@ -7,6 +7,7 @@ import { message } from "antd";
 const Upload = ({ editProductId, setActiveTabKey }) => {
   const [previewImg, setPreviewImg] = useState([]);
   const [productImages, setProductImages] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   const onChangeHandler = (event) => {
     const selectedImages = event.target.files;
@@ -36,6 +37,7 @@ const Upload = ({ editProductId, setActiveTabKey }) => {
 
   const submitHandler = async (event) => {
     event.preventDefault();
+    setIsLoading(true);
 
     const formData = new FormData();
 
@@ -56,6 +58,7 @@ const Upload = ({ editProductId, setActiveTabKey }) => {
     } catch (err) {
       message.error(err.message);
     }
+    setIsLoading(false);
   };
 
   return (
@@ -103,7 +106,7 @@ const Upload = ({ editProductId, setActiveTabKey }) => {
               ))}
           </div>
           <button className="bg-blue-600 text-white p-2 rounded-md font-medium">
-            Upload
+            {isLoading ? "Uploading..." : "Upload Images"}
           </button>
         </div>
       </form>
