@@ -89,3 +89,21 @@ export const getProductImages = async (id) => {
     return err.message;
   }
 };
+
+// Delete Product Images (Saved Images)
+export const deleteProductImages = async (payload) => {
+  const { product_id, imgToDelete } = payload;
+
+  try {
+    const response = await axiosInstance.delete(
+      `/product/images/destroy/${product_id}/${imgToDelete}`,
+      {
+        validateStatus: () => true,
+      }
+    );
+
+    return response.data;
+  } catch (err) {
+    return err.message;
+  }
+};
