@@ -77,3 +77,15 @@ export const uploadProductImages = async (formData) => {
     return err.message;
   }
 };
+
+// Get Product Images (Saved Images)
+export const getProductImages = async (id) => {
+  try {
+    const response = await axiosInstance.get(`/product-images/${id}`, {
+      validateStatus: () => true,
+    });
+    return response.data;
+  } catch (err) {
+    return err.message;
+  }
+};
