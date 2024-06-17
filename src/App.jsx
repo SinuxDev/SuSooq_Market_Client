@@ -5,6 +5,7 @@ import Register from "./pages/Register";
 import Login from "./pages/Login";
 import Main from "./layouts/Main";
 import Profile from "./pages/profile/Index";
+import Admin from "./pages/admin/Index";
 import AuthProvider from "./providers/AuthProvider";
 
 const App = () => {
@@ -15,7 +16,12 @@ const App = () => {
       children: [
         {
           index: true,
-          element: <Index />,
+          element: (
+            <AuthProvider>
+              {" "}
+              <Index />{" "}
+            </AuthProvider>
+          ),
         },
         {
           path: "/register",
@@ -31,6 +37,15 @@ const App = () => {
             <AuthProvider>
               {" "}
               <Profile />{" "}
+            </AuthProvider>
+          ),
+        },
+        {
+          path: "/admin",
+          element: (
+            <AuthProvider>
+              {" "}
+              <Admin />{" "}
             </AuthProvider>
           ),
         },
