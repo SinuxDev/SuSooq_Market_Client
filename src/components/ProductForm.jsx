@@ -213,10 +213,6 @@ const ProductForm = ({
                   required: true,
                   message: "Please input your Product Price!",
                 },
-                {
-                  min: 1,
-                  message: "Product Price must be contains at least 1 digit",
-                },
               ]}
               hasFeedback
             >
