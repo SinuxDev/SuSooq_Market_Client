@@ -1,7 +1,6 @@
 import PropTypes from "prop-types";
 import ProductForm from "../../components/ProductForm";
 import { Tabs } from "antd";
-import { useState } from "react";
 import Upload from "../../components/Upload";
 
 const ManageProduct = ({
@@ -9,9 +8,8 @@ const ManageProduct = ({
   getProducts,
   editMode,
   editProductId,
+  manageTabKey,
 }) => {
-  const [productActiveTabKey, setProductActiveTabKey] = useState("1");
-
   const items = [
     {
       key: "1",
@@ -39,18 +37,9 @@ const ManageProduct = ({
       : null,
   ];
 
-  const onChangeHandler = (key) => {
-    setProductActiveTabKey(key);
-  };
-
   return (
     <>
-      <Tabs
-        activeKey={productActiveTabKey}
-        onChange={(key) => onChangeHandler(key)}
-        items={items}
-        animated={false}
-      />
+      <Tabs defaultActiveKey={manageTabKey} items={items} animated={false} />
     </>
   );
 };
@@ -60,6 +49,7 @@ ManageProduct.propTypes = {
   getProducts: PropTypes.func,
   editMode: PropTypes.bool,
   editProductId: PropTypes.any,
+  manageTabKey: PropTypes.any,
 };
 
 export default ManageProduct;
