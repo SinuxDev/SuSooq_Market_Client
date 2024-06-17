@@ -1,8 +1,10 @@
 import { Button, Checkbox, Col, Form, Input, Row, Select, message } from "antd";
 import PropTypes from "prop-types";
+import { useDispatch, useSelector } from "react-redux";
 const { TextArea } = Input;
 
 import { getSoldProducts, getOldProduct, updateProducts } from "../api/product";
+import { setProcessing } from "../store/slices/loaderSlice";
 import { useCallback, useEffect, useState } from "react";
 
 const ProductForm = ({
@@ -13,6 +15,8 @@ const ProductForm = ({
 }) => {
   const [form] = Form.useForm();
   const [sellerId, setSellerId] = useState(null);
+  const { isProcessing } = useSelector((state) => state.reducer.isProcessing);
+  const dispatch = useDispatch();
 
   const CatagoriesOptions = [
     {
@@ -81,6 +85,7 @@ const ProductForm = ({
   ];
 
   const handleOnFinish = async (values) => {
+    dispatch(setProcessing(true));
     try {
       let response;
 
@@ -103,6 +108,7 @@ const ProductForm = ({
     } catch (err) {
       message.error(err.message);
     }
+    dispatch(setProcessing(false));
   };
 
   const getOldProductDetails = useCallback(async () => {
@@ -254,8 +260,15 @@ const ProductForm = ({
           <Checkbox.Group options={checkBoxOptions} />
         </Form.Item>
         <Form.Item>
-          <Button type="primary" htmlType="submit" className="p-4">
-            {editMode ? "Update Product" : "Add Product"}
+          <Button
+            type="primary"
+            htmlType="submit"
+            className="p-4"
+            disabled={isProcessing}
+          >
+            {editMode && !isProcessing && "Update Product"}
+            {!editMode && !isProcessing && "Submit Product"}
+            {isProcessing && "Submittng..."}
           </Button>
         </Form.Item>
       </Form>
