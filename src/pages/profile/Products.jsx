@@ -9,11 +9,19 @@ const Products = ({
   setEditMode,
   setEditProductId,
   getProducts,
+  setManageTabKey,
 }) => {
   const editButtonHandler = (productId) => {
     setEditProductId(productId);
     setEditMode(true);
     setActiveTabKey("2");
+  };
+
+  const uploadButtonHandler = (productId) => {
+    setEditProductId(productId);
+    setEditMode(true);
+    setActiveTabKey("2");
+    setManageTabKey("2");
   };
 
   const deleteButtonHandler = async (product_id) => {
@@ -91,7 +99,7 @@ const Products = ({
                         type="button"
                         className="font-medium text-green-600  hover:underline me-4"
                         onClick={() => {
-                          editButtonHandler(product._id);
+                          uploadButtonHandler(product._id);
                         }}
                       >
                         Upload
@@ -138,6 +146,7 @@ Products.propTypes = {
   setEditMode: PropTypes.func,
   setEditProductId: PropTypes.any,
   getProducts: PropTypes.any,
+  setManageTabKey: PropTypes.any,
 };
 
 export default Products;
