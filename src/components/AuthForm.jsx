@@ -1,19 +1,19 @@
 import { Button, Form, Input, message } from "antd";
 import { registerUser, loginUser } from "../api/auth";
 
-import { useState } from "react";
 import PropTypes from "prop-types";
 import { Link, useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setUser } from "../store/slices/userSlice";
+import { setProcessing } from "../store/slices/loaderSlice";
 
 const AuthForm = ({ isLogin }) => {
-  const [submitting, setSubmitting] = useState(false);
+  const { isProcessing } = useSelector((state) => state.reducer.isProcessing);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const handleOnFinish = async (values) => {
-    setSubmitting(true);
+    dispatch(setProcessing(true));
     try {
       const response = await (isLogin
         ? loginUser(values)
@@ -32,7 +32,7 @@ const AuthForm = ({ isLogin }) => {
     } catch (err) {
       message.error(err.message);
     }
-    setSubmitting(false);
+    dispatch(setProcessing(false));
   };
 
   return (
@@ -106,11 +106,12 @@ const AuthForm = ({ isLogin }) => {
               type="primary"
               htmlType="submit"
               className="w-full"
-              disabled={submitting}
+              disabled={isProcessing}
             >
-              {isLogin && !submitting && "Login"}
-              {!isLogin && !submitting && "Register"}
-              {submitting && "Submitting..."}
+              {isLogin && !isProcessing && "Login"}
+              {!isLogin && !isProcessing && "Register"}
+              {isProcessing && isLogin && "Logging in..."}
+              {isProcessing && !isLogin && "Registering..."}
             </Button>
           </Form.Item>
           <p>
