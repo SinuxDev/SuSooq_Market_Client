@@ -6,13 +6,17 @@ import {
   getProductImages,
   uploadProductImages,
 } from "../api/product";
+import { useDispatch, useSelector } from "react-redux";
+import { setProcessing } from "../store/slices/loaderSlice";
 import { message } from "antd";
 
 const Upload = ({ editProductId, setActiveTabKey }) => {
   const [previewImg, setPreviewImg] = useState([]);
   const [productImages, setProductImages] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
   const [savedImages, setSavedImages] = useState([]);
+
+  const { isProcessing } = useSelector((state) => state.reducer.isProcessing);
+  const dispatch = useDispatch();
 
   const [selectedImgCount, setSelectedImgCount] = useState(0);
 
@@ -77,7 +81,7 @@ const Upload = ({ editProductId, setActiveTabKey }) => {
       return message.error("Please select at least 2 images to upload");
     }
 
-    setIsLoading(true);
+    dispatch(setProcessing(true));
 
     const formData = new FormData();
 
@@ -98,7 +102,8 @@ const Upload = ({ editProductId, setActiveTabKey }) => {
     } catch (err) {
       message.error(err.message);
     }
-    setIsLoading(false);
+
+    dispatch(setProcessing(false));
   };
 
   const savedImagesDeleteHandler = async (img) => {
@@ -191,7 +196,7 @@ const Upload = ({ editProductId, setActiveTabKey }) => {
               ))}
           </div>
           <button className="bg-blue-600 text-white p-2 rounded-md font-medium">
-            {isLoading ? "Uploading..." : "Upload Images"}
+            {isProcessing ? "Uploading..." : "Upload"}
           </button>
         </div>
       </form>
