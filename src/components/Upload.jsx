@@ -14,6 +14,8 @@ const Upload = ({ editProductId, setActiveTabKey }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [savedImages, setSavedImages] = useState([]);
 
+  const [selectedImgCount, setSelectedImgCount] = useState(0);
+
   const getSavedImages = async (product_id) => {
     try {
       const response = await getProductImages(product_id);
@@ -36,7 +38,12 @@ const Upload = ({ editProductId, setActiveTabKey }) => {
 
   const onChangeHandler = (event) => {
     const selectedImages = event.target.files;
+    const selectedImagesArray = Array.from(selectedImages);
     setProductImages(selectedImages);
+
+    //update selected image count
+    setSelectedImgCount((prev) => prev + selectedImagesArray.length);
+
     const convertedImages = Array.from(selectedImages);
 
     const previewImgArray = convertedImages.map((image) => {
@@ -48,6 +55,9 @@ const Upload = ({ editProductId, setActiveTabKey }) => {
 
   const deleteHandler = (img) => {
     const indexToDelete = previewImg.findIndex((e) => e === img);
+
+    //update selected image count
+    setSelectedImgCount((prev) => prev - 1);
 
     if (indexToDelete !== -1) {
       const updatedSelectedImages = [...productImages];
@@ -62,6 +72,11 @@ const Upload = ({ editProductId, setActiveTabKey }) => {
 
   const submitHandler = async (event) => {
     event.preventDefault();
+
+    if (!(selectedImgCount > 1)) {
+      return message.error("Please select at least 2 images to upload");
+    }
+
     setIsLoading(true);
 
     const formData = new FormData();
