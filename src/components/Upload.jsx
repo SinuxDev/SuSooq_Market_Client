@@ -195,9 +195,14 @@ const Upload = ({ editProductId, setActiveTabKey }) => {
                 </div>
               ))}
           </div>
-          <button className="bg-blue-600 text-white p-2 rounded-md font-medium">
-            {isProcessing ? "Uploading..." : "Upload"}
-          </button>
+          {selectedImgCount > 1 && (
+            <button
+              className="bg-blue-600 text-white p-2 rounded-md font-medium"
+              disabled={isProcessing && selectedImgCount < 1}
+            >
+              {isProcessing ? "Uploading..." : "Upload"}
+            </button>
+          )}
         </div>
       </form>
     </section>
