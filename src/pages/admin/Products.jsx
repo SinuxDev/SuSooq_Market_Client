@@ -1,7 +1,56 @@
 import PropTypes from "prop-types";
 import moment from "moment";
+import { message } from "antd";
+import {
+  approveProduct,
+  rejectProduct,
+  rollbackProduct,
+} from "../../api/admin";
 
-const Products = ({ products }) => {
+const Products = ({ products, getProducts }) => {
+  const productApproveHandler = async (productId) => {
+    try {
+      const response = await approveProduct(productId);
+
+      if (response.isSuccess) {
+        message.success(response.message);
+        getProducts();
+      } else {
+        throw new Error(response.message);
+      }
+    } catch (err) {
+      message.error(err.message);
+    }
+  };
+
+  const productRejectHandler = async (productId) => {
+    try {
+      const response = await rejectProduct(productId);
+      if (response.isSuccess) {
+        message.success(response.message);
+        getProducts();
+      } else {
+        throw new Error(response.message);
+      }
+    } catch (err) {
+      message.error(err.message);
+    }
+  };
+
+  const rollBackHandler = async (productId) => {
+    try {
+      const response = await rollbackProduct(productId);
+      if (response.isSuccess) {
+        message.success(response.message);
+        getProducts();
+      } else {
+        throw new Error(response.message);
+      }
+    } catch (err) {
+      message.error(err.message);
+    }
+  };
+
   return (
     <section>
       <h1 className="text-3xl font-semibold my-2 text-center">Products List</h1>
@@ -51,16 +100,68 @@ const Products = ({ products }) => {
                     </td>
                     <td className="px-6 py-4">
                       {" "}
-                      {product.status === "pending" ? (
+                      {product.status === "pending" && (
                         <span className="bg-yellow-400 text-xs p-1 rounded-md text-white">
                           {product.status}
                         </span>
-                      ) : (
+                      )}
+                      {product.status === "approved" && (
                         <span className="bg-green-600 text-xs p-1 rounded-md text-white">
                           {" "}
                           {product.status}{" "}
                         </span>
+                      )}
+                      {product.status === "rejected" && (
+                        <span className="bg-red-600 text-xs p-1 rounded-md text-white">
+                          {" "}
+                          {product.status}{" "}
+                        </span>
                       )}{" "}
+                    </td>
+                    <td className="px-6 py-4">
+                      {product.status === "approved" ? (
+                        <button
+                          type="button"
+                          className="font-medium text-blue-600  hover:underline me-4"
+                          onClick={() => {
+                            rollBackHandler(product._id);
+                          }}
+                        >
+                          Roll Back
+                        </button>
+                      ) : (
+                        <button
+                          type="button"
+                          className="font-medium text-yellow-400  hover:underline me-4"
+                          onClick={() => {
+                            productApproveHandler(product._id);
+                          }}
+                        >
+                          Approve
+                        </button>
+                      )}
+
+                      {product.status === "rejected" ? (
+                        <button
+                          type="button"
+                          className="font-medium text-blue-600  hover:underline me-4"
+                          onClick={() => {
+                            rollBackHandler(product._id);
+                          }}
+                        >
+                          Roll Back
+                        </button>
+                      ) : (
+                        <button
+                          type="button"
+                          className="font-medium text-red-500  hover:underline me-4"
+                          onClick={() => {
+                            productRejectHandler(product._id);
+                          }}
+                        >
+                          Reject
+                        </button>
+                      )}
                     </td>
                   </tr>
                 ))}
@@ -81,6 +182,7 @@ const Products = ({ products }) => {
 
 Products.propTypes = {
   products: PropTypes.array.isRequired,
+  getProducts: PropTypes.func,
 };
 
 export default Products;
