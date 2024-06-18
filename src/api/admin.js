@@ -33,3 +33,7 @@ export const approveProduct = async (productId) =>
 // Reject Product API
 export const rejectProduct = async (productId) =>
   updateProductStatus(productId, "reject");
+
+// Rollback Product API
+export const rollbackProduct = async (productId) =>
+  updateProductStatus(productId, "rollback");
