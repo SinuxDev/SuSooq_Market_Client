@@ -1,9 +1,8 @@
 import { axiosInstance } from "./axiosInstance";
 
-// Get All Products API
-export const getAllProducts = async () => {
+const adminFetchEntities = async (endpoint) => {
   try {
-    const response = await axiosInstance.get("/admin/products", {
+    const response = await axiosInstance.get(`/admin/${endpoint}`, {
       validateStatus: () => true,
     });
     return response.data;
@@ -11,6 +10,12 @@ export const getAllProducts = async () => {
     return error.message;
   }
 };
+
+// Get All Products API
+export const getAllProducts = () => adminFetchEntities("products");
+
+// Get All Users API
+export const getAllUsers = () => adminFetchEntities("users");
 
 const updateProductStatus = async (productId, status) => {
   try {
