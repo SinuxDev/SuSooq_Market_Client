@@ -42,3 +42,24 @@ export const rejectProduct = async (productId) =>
 // Rollback Product API
 export const rollbackProduct = async (productId) =>
   updateProductStatus(productId, "rollback");
+
+// Update User Status API
+const updateUserStatus = async (userId, status) => {
+  try {
+    const response = await axiosInstance.post(
+      `/admin/users/${status}/${userId}`,
+      {
+        validateStatus: () => true,
+      }
+    );
+    return response.data;
+  } catch (error) {
+    return error.message;
+  }
+};
+
+// Ban User API
+export const banUser = async (userId) => updateUserStatus(userId, "ban");
+
+// Unban User API
+export const unbanUser = async (userId) => updateUserStatus(userId, "unban");
