@@ -12,11 +12,10 @@ export const getAllProducts = async () => {
   }
 };
 
-// Approve Product API
-export const approveProduct = async (productId) => {
+const updateProductStatus = async (productId, status) => {
   try {
     const response = await axiosInstance.post(
-      `/admin/products/approve/${productId}`,
+      `/admin/products/${status}/${productId}`,
       {
         validateStatus: () => true,
       }
@@ -27,17 +26,10 @@ export const approveProduct = async (productId) => {
   }
 };
 
+// Approve Product API
+export const approveProduct = async (productId) =>
+  updateProductStatus(productId, "approve");
+
 // Reject Product API
-export const rejectProduct = async (productId) => {
-  try {
-    const response = await axiosInstance.post(
-      `/admin/products/reject/${productId}`,
-      {
-        validateStatus: () => true,
-      }
-    );
-    return response.data;
-  } catch (error) {
-    return error.message;
-  }
-};
+export const rejectProduct = async (productId) =>
+  updateProductStatus(productId, "reject");
