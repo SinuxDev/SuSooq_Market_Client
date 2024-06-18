@@ -83,12 +83,19 @@ const Products = ({
                     </td>
                     <td className="px-6 py-4">
                       {" "}
-                      {product.status === "pending" ? (
+                      {product.status === "pending" && (
                         <span className="bg-yellow-400 text-xs p-1 rounded-md text-white">
                           {product.status}
                         </span>
-                      ) : (
+                      )}
+                      {product.status === "approved" && (
                         <span className="bg-green-600 text-xs p-1 rounded-md text-white">
+                          {" "}
+                          {product.status}{" "}
+                        </span>
+                      )}
+                      {product.status === "rejected" && (
+                        <span className="bg-red-600 text-xs p-1 rounded-md text-white">
                           {" "}
                           {product.status}{" "}
                         </span>
