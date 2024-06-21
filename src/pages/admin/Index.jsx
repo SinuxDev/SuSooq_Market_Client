@@ -6,6 +6,7 @@ import { getAllProducts } from "../../api/admin";
 import General from "./General";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import Dashboard from "./Dashboard";
 
 const Index = () => {
   const { user } = useSelector((state) => state.reducer.user);
@@ -56,10 +57,15 @@ const Index = () => {
     },
     {
       key: "3",
-      label: "Notifications",
+      label: "Dashboard",
+      children: <Dashboard products={products} />,
     },
     {
       key: "4",
+      label: "Notifications",
+    },
+    {
+      key: "5",
       label: "General",
       children: <General />,
     },
