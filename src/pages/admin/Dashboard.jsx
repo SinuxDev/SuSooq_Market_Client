@@ -6,11 +6,12 @@ import {
   ShoppingCartIcon,
 } from "@heroicons/react/24/outline";
 import ArenaCharts from "../../components/Dashboard/ArenaCharts";
+import BarLists from "../../components/Dashboard/BarLists";
 
 const Dashboard = ({ products }) => {
   return (
     <section>
-      <div className="flex items-center gap-6 mb-5">
+      <div className="flex items-center gap-6 mb-5 mt-2">
         <Cards
           title={"Total Sales"}
           count={"35000 MMK"}
@@ -30,7 +31,10 @@ const Dashboard = ({ products }) => {
           note={"Users"}
         />
       </div>
-      <ArenaCharts />
+      <div className="mt-9 mb-10">
+        <ArenaCharts />
+      </div>
+      <BarLists />
     </section>
   );
 };
