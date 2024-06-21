@@ -1,24 +1,10 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import moment from "moment";
 import { message } from "antd";
-import { banUser, getAllUsers, unbanUser } from "../../api/admin";
+import { banUser, unbanUser } from "../../api/admin";
+import PropTypes from "prop-types";
 
-const User = () => {
-  const [users, setUsers] = useState([]);
-
-  const getUsers = async () => {
-    try {
-      const response = await getAllUsers();
-      if (response.isSuccess) {
-        setUsers(response.userDocs);
-      } else {
-        throw new Error(response.message);
-      }
-    } catch (err) {
-      message.error(err.message);
-    }
-  };
-
+const User = ({ users, getUsers }) => {
   useEffect(() => {
     getUsers();
   }, []);
@@ -160,6 +146,11 @@ const User = () => {
       </div>
     </section>
   );
+};
+
+User.propTypes = {
+  users: PropTypes.any.isRequired,
+  getUsers: PropTypes.func.isRequired,
 };
 
 export default User;
