@@ -7,14 +7,50 @@ import {
 } from "@heroicons/react/24/outline";
 import ArenaCharts from "../../components/Dashboard/ArenaCharts";
 import BarLists from "../../components/Dashboard/BarLists";
+import { useEffect, useReducer } from "react";
 
-const Dashboard = ({ products }) => {
+// Intitial State
+const initialState = {
+  totalSales: 0,
+  usersCount: 0,
+};
+
+// Reducer
+const reducer = (state, action) => {
+  switch (action.type) {
+    case "TOTAL_SALES":
+      return {
+        ...state,
+        totalSales: action.products.reduce((acc, curr) => acc + curr.price, 0),
+      };
+    case "USERS_COUNT":
+      return { ...state, usersCount: action.users.length };
+    default:
+      return state;
+  }
+};
+
+const Dashboard = ({ products, users }) => {
+  const [state, dispatch] = useReducer(reducer, initialState);
+
+  useEffect(() => {
+    if (products.length) {
+      dispatch({ type: "TOTAL_SALES", products });
+    }
+  }, [products]);
+
+  useEffect(() => {
+    dispatch({ type: "USERS_COUNT", users });
+  }, [users]);
+
+  const { totalSales, usersCount } = state;
+
   return (
     <section>
       <div className="flex items-center gap-6 mb-5 mt-2">
         <Cards
           title={"Total Sales"}
-          count={"35000 MMK"}
+          count={`${totalSales} MMK`}
           icon={BanknotesIcon}
           note={"MMK"}
         />
@@ -26,7 +62,7 @@ const Dashboard = ({ products }) => {
         />
         <Cards
           title={"Active Users"}
-          count={"200"}
+          count={usersCount}
           icon={UserGroupIcon}
           note={"Users"}
         />
@@ -41,6 +77,7 @@ const Dashboard = ({ products }) => {
 
 Dashboard.propTypes = {
   products: PropTypes.array.isRequired,
+  users: PropTypes.array.isRequired,
 };
 
 export default Dashboard;
