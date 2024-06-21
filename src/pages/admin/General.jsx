@@ -17,7 +17,10 @@ const General = () => {
 
   return (
     <section>
-      <h1 className="text-2xl font-bold my-2">General</h1>
+      <h1 className="text-2xl font-bold my-2">
+        {" "}
+        {role === "user" ? "User Profile" : "Admin Profile"}{" "}
+      </h1>
       <p className="text-lg font-medium my-2"> Name - {name} </p>
       <p className="text-lg font-medium my-2"> Email - {email} </p>
       <p className="text-lg font-medium my-2"> Role - {role} </p>
