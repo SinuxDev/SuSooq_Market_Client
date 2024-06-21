@@ -2,7 +2,7 @@ import { Tabs, message } from "antd";
 import { useCallback, useEffect, useState } from "react";
 import Products from "./Products";
 import User from "./User";
-import { getAllProducts } from "../../api/admin";
+import { getAllProducts, getAllUsers } from "../../api/admin";
 import General from "./General";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -12,6 +12,20 @@ const Index = () => {
   const { user } = useSelector((state) => state.reducer.user);
   const [activeTabKey, setActiveTabKey] = useState("1");
   const [products, setProducts] = useState([]);
+  const [users, setUsers] = useState([]);
+
+  const getUsers = async () => {
+    try {
+      const response = await getAllUsers();
+      if (response.isSuccess) {
+        setUsers(response.userDocs);
+      } else {
+        throw new Error(response.message);
+      }
+    } catch (err) {
+      message.error(err.message);
+    }
+  };
 
   const navigate = useNavigate();
 
@@ -42,6 +56,7 @@ const Index = () => {
 
   useEffect(() => {
     getProducts();
+    getUsers();
   }, [activeTabKey, checkIsAdmin]);
 
   const items = [
@@ -53,12 +68,12 @@ const Index = () => {
     {
       key: "2",
       label: "Users Management",
-      children: <User />,
+      children: <User users={users} getUsers={getUsers} />,
     },
     {
       key: "3",
       label: "Dashboard",
-      children: <Dashboard products={products} />,
+      children: <Dashboard products={products} users={users} />,
     },
     {
       key: "4",
