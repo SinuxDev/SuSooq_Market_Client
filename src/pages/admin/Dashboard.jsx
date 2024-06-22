@@ -34,19 +34,16 @@ const Dashboard = ({ products, users }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
   useEffect(() => {
-    if (products.length) {
+    if (products.length > 0) {
       dispatch({ type: "TOTAL_SALES", products });
+      dispatch({ type: "USERS_COUNT", users });
     }
-  }, [products]);
-
-  useEffect(() => {
-    dispatch({ type: "USERS_COUNT", users });
-  }, [users]);
+  }, [products, users]);
 
   const { totalSales, usersCount } = state;
 
   return (
-    <section>
+    <section className="flex flex-col h-full">
       <div className="flex items-center gap-6 mb-5 mt-2">
         <Cards
           title={"Total Sales"}
@@ -67,7 +64,7 @@ const Dashboard = ({ products, users }) => {
           note={"Users"}
         />
       </div>
-      <div className="mt-9 mb-10">
+      <div className="flex-1 min-w-[300px] min-h-[300px] h-full">
         <ArenaCharts />
       </div>
       <BarLists />
@@ -76,8 +73,8 @@ const Dashboard = ({ products, users }) => {
 };
 
 Dashboard.propTypes = {
-  products: PropTypes.array.isRequired,
-  users: PropTypes.array.isRequired,
+  products: PropTypes.any.isRequired,
+  users: PropTypes.any.isRequired,
 };
 
 export default Dashboard;
