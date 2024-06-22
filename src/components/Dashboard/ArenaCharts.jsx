@@ -1,4 +1,5 @@
 import { AreaChart, Card, Title } from "@tremor/react";
+import UseElementSize from "../../hooks/UseElementSize";
 
 const chartdata = [
   {
@@ -55,21 +56,27 @@ const valueFormatter = (number) =>
   `$${Intl.NumberFormat("us").format(number).toString()}`;
 
 const ArenaCharts = () => {
+  const [ref, size] = UseElementSize();
+
   return (
-    <Card>
-      <Title className="text-tremor-metric text-tremor-content-strong dark:text-dark-tremor-content-strong font-semibold">
-        Product Sales Overview
-      </Title>
-      <AreaChart
-        className="mt-1 h-72"
-        data={chartdata}
-        index="date"
-        categories={["Products"]}
-        colors={["indigo"]}
-        valueFormatter={valueFormatter}
-        yAxisWidth={60}
-      />
-    </Card>
+    <div ref={ref} className="w-full h-full min-w-[300px] min-h-[300px]">
+      {size.width > 0 && size.height > 0 && (
+        <Card>
+          <Title className="text-tremor-metric text-tremor-content-strong dark:text-dark-tremor-content-strong font-semibold">
+            Product Sales Overview
+          </Title>
+          <AreaChart
+            className="mt-1 h-72"
+            data={chartdata}
+            index="date"
+            categories={["Products"]}
+            colors={["indigo"]}
+            valueFormatter={valueFormatter}
+            yAxisWidth={60}
+          />
+        </Card>
+      )}
+    </div>
   );
 };
 
