@@ -23,6 +23,8 @@ const AuthProvider = ({ children }) => {
         if (response.isSuccess) {
           dispatch(setUser(response.userDoc));
         } else {
+          localStorage.removeItem("token");
+          dispatch(setUser(null));
           handleNavigate();
           throw new Error(response.message);
         }
