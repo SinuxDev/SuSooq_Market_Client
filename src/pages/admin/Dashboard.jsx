@@ -67,7 +67,7 @@ const Dashboard = ({ products, users }) => {
       <div className="flex-1 min-w-[300px] min-h-[300px] h-full">
         <ArenaCharts products={products} />
       </div>
-      <BarLists />
+      <BarLists products={products} />
     </section>
   );
 };
