@@ -14,7 +14,7 @@ const Index = () => {
   const [products, setProducts] = useState([]);
   const [users, setUsers] = useState([]);
 
-  const getUsers = async () => {
+  const getUsers = useCallback(async () => {
     try {
       const response = await getAllUsers();
       if (response.isSuccess) {
@@ -25,7 +25,7 @@ const Index = () => {
     } catch (err) {
       message.error(err.message);
     }
-  };
+  }, []);
 
   const navigate = useNavigate();
 
@@ -33,7 +33,7 @@ const Index = () => {
     setActiveTabKey(key);
   };
 
-  const getProducts = async () => {
+  const getProducts = useCallback(async () => {
     try {
       const response = await getAllProducts();
       if (response.isSuccess) {
@@ -44,7 +44,7 @@ const Index = () => {
     } catch (err) {
       message.error(err.message);
     }
-  };
+  }, []);
 
   const checkIsAdmin = useCallback(() => {
     if (user.role !== "admin") {
@@ -57,7 +57,7 @@ const Index = () => {
   useEffect(() => {
     getProducts();
     getUsers();
-  }, [activeTabKey, checkIsAdmin]);
+  }, [activeTabKey, checkIsAdmin, getProducts, getUsers]);
 
   const items = [
     {
