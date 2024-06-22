@@ -7,7 +7,7 @@ import PropTypes from "prop-types";
 const User = ({ users, getUsers }) => {
   useEffect(() => {
     getUsers();
-  }, []);
+  }, [getUsers]);
 
   const banHandler = async (userId) => {
     try {
