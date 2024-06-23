@@ -3,8 +3,12 @@ import PropTypes from "prop-types";
 import { useDispatch, useSelector } from "react-redux";
 const { TextArea } = Input;
 
-import { getSoldProducts, getOldProduct, updateProducts } from "../api/product";
-import { setProcessing } from "../store/slices/loaderSlice";
+import {
+  getSoldProducts,
+  getOldProduct,
+  updateProducts,
+} from "../../api/product";
+import { setProcessing } from "../../store/slices/loaderSlice";
 import { useCallback, useEffect, useState } from "react";
 
 const ProductForm = ({

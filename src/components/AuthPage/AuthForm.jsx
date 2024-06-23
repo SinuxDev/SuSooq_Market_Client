@@ -1,11 +1,11 @@
 import { Button, Form, Input, message } from "antd";
-import { registerUser, loginUser } from "../api/auth";
+import { registerUser, loginUser } from "../../api/auth";
 
 import PropTypes from "prop-types";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { setUser } from "../store/slices/userSlice";
-import { setProcessing } from "../store/slices/loaderSlice";
+import { setUser } from "../../store/slices/userSlice";
+import { setProcessing } from "../../store/slices/loaderSlice";
 
 const AuthForm = ({ isLogin }) => {
   const { isProcessing } = useSelector((state) => state.reducer.isProcessing);

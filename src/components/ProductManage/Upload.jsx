@@ -5,9 +5,9 @@ import {
   deleteProductImages,
   getProductImages,
   uploadProductImages,
-} from "../api/product";
+} from "../../api/product";
 import { useDispatch, useSelector } from "react-redux";
-import { setProcessing } from "../store/slices/loaderSlice";
+import { setProcessing } from "../../store/slices/loaderSlice";
 import { message } from "antd";
 
 const Upload = ({ editProductId, setActiveTabKey }) => {

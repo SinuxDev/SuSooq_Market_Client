@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
-import ProductForm from "../../components/ProductForm";
+import ProductForm from "../../components/ProductManage/ProductForm";
 import { Tabs } from "antd";
-import Upload from "../../components/Upload";
+import Upload from "../../components/ProductManage/Upload";
 
 const ManageProduct = ({
   setActiveTabKey,
