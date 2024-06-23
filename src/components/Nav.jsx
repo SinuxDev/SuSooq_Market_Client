@@ -6,10 +6,15 @@ import { UserIcon } from "@heroicons/react/24/solid";
 const Nav = () => {
   const { user } = useSelector((state) => state.reducer.user);
   return (
-    <nav className="bg-blue-500 flex items-center justify-between text-white p-4">
+    <nav className=" flex items-center justify-between text-blue-600 py-4 mb-4">
       <Link className="font-bold text-2xl" to={"/"}>
         SuSooq.IO
       </Link>
+      <div className="flex items-center gap-3">
+        <Link to={"/about"}> About </Link>
+        <Link to={"/contact"}> Contact </Link>
+        <Link to={"/askQuestions"}> Ask Questions </Link>
+      </div>
       {user ? (
         <>
           {user.role === "user" && (
