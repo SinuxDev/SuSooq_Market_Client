@@ -18,7 +18,7 @@ const BarLists = ({ products }) => {
     });
 
     const data = Object.entries(categories).map(([category, count]) => ({
-      name: category,
+      name: category.toUpperCase().replace("_", " "),
       value: count,
     }));
 
