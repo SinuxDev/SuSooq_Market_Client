@@ -8,11 +8,11 @@ import {
 const Hero = () => {
   return (
     <>
-      <div className="w-full text-center my-6">
-        <h1 className="text-3xl font-bold text-blue-600 mb-4">
+      <div className="w-full text-center my-8">
+        <h1 className="text-3xl font-bold text-blue-600 mb-5">
           <q>Rich With SuSooq</q>
         </h1>
-        <p className="text-lg font-medium text-gray-600 max-w-xl mx-auto mb-4">
+        <p className="text-lg font-medium text-gray-600 max-w-xl mx-auto mb-8">
           Explore a wide range of products. Secure transactions. Connect with a
           vibrant community. Enjoy exclusive deals and a seamless shopping
           experience. Join us today!
@@ -31,25 +31,25 @@ const Hero = () => {
               <CloudArrowUpIcon
                 width={40}
                 height={40}
-                className="text-gray-300 mx-auto "
+                className="text-gray-300 mx-auto"
               />
             </div>
-            <p className=" text-black font-extrabold text-2xl">Customizable</p>
-            <p className="text-gray-500 font-semibold italic">
-              Free website designs to launch your store quickly and easily.
+            <p className="text-black font-extrabold text-2xl">Cloud Storage</p>
+            <p className="text-gray-500 font-semibold italic flex-grow">
+              Secure and Scalable & Smarter with Cloud Storage Solutions
             </p>
           </div>
-          <div className="flex items-center flex-col w-1/3">
+          <div className="flex items-center flex-col w-1/2">
             <div className="bg-blue-500 p-1 w-1/6 mx-auto rounded-xl mb-2">
               <LockClosedIcon
                 width={40}
                 height={40}
-                className="text-gray-300 mx-auto "
+                className="text-gray-300 mx-auto"
               />
             </div>
-            <p className=" text-black font-extrabold text-2xl">Customizable</p>
-            <p className="text-gray-500 font-semibold italic">
-              Free website designs to launch your store quickly and easily.
+            <p className="text-black font-extrabold text-2xl">Data Security</p>
+            <p className="text-gray-500 font-semibold italic flex-grow">
+              Your Data, Our Priority: Top-Tier Security Solutions
             </p>
           </div>
           <div className="flex items-center flex-col w-1/3">
@@ -57,17 +57,19 @@ const Hero = () => {
               <GlobeAltIcon
                 width={40}
                 height={40}
-                className="text-gray-300 mx-auto "
+                className="text-gray-300 mx-auto"
               />
             </div>
-            <p className=" text-black font-extrabold text-2xl">Customizable</p>
-            <p className="text-gray-500 font-semibold italic">
-              Free website designs to launch your store quickly and easily.
+            <p className="text-black font-extrabold text-2xl">
+              Global Shipping
+            </p>
+            <p className="text-gray-500 font-semibold italic flex-grow">
+              Seamless Worldwide Delivery Solutions
             </p>
           </div>
         </div>
       </div>
-      <hr className="border border-solid mb-12" />
+      <hr className="border border-gray-300 mb-12" />
     </>
   );
 };
