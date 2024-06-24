@@ -25,7 +25,7 @@ const Hero = () => {
             className="text-blue-600 absolute top-2 right-2 cursor-pointer"
           />
         </div>
-        <div className="flex items-center justify-between max-w-6xl mx-auto mt-12 mb-20">
+        <div className="flex items-center justify-between max-w-6xl mx-auto mt-16 mb-20">
           <div className="flex items-center flex-col w-1/3">
             <div className="bg-blue-500 p-1 w-1/6 mx-auto rounded-xl mb-2">
               <CloudArrowUpIcon
