@@ -25,13 +25,15 @@ const Index = () => {
     getAllPublicProducts();
   }, [getAllPublicProducts]);
 
-  console.log(products);
-
   return (
     <>
       <Hero />
       <Filter />
-      <Cards products={products} />
+      <div className="flex max-w-4xl flex-wrap mx-auto flex-row">
+        {products.map((product) => (
+          <Cards key={product._id} product={product} />
+        ))}
+      </div>
     </>
   );
 };
