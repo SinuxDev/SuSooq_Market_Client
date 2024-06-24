@@ -31,7 +31,7 @@ const Nav = () => {
           )}
         </>
       ) : (
-        <div className="text-white flex items-center gap-3 text-base font-medium">
+        <div className=" flex items-center gap-3 text-base font-medium">
           <Link to={"/login"}>Login</Link>
           <Link to={"/register"}>Register</Link>
         </div>
