@@ -10,7 +10,7 @@ const Nav = () => {
       <Link className="font-bold text-2xl" to={"/"}>
         SuSooq.IO
       </Link>
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-3 font-semibold text-lg">
         <Link to={"/about"}> About </Link>
         <Link to={"/contact"}> Contact </Link>
         <Link to={"/askQuestions"}> Ask Questions </Link>
