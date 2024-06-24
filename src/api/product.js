@@ -58,3 +58,6 @@ export const deleteProductImages = async (payload) => {
     return err.message;
   }
 };
+
+// Public Products API
+export const getPublicProducts = async () => FetchProduct("/api/products");
