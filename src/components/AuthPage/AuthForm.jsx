@@ -36,7 +36,7 @@ const AuthForm = ({ isLogin }) => {
   };
 
   return (
-    <section className="h-screen w-full flex items-center justify-center">
+    <section className="w-full flex mt-36 justify-center">
       <div className="w-[450px]">
         <h1 className="text-3xl font-bold mb-4 text-blue-600">
           SuSooq.IO - {isLogin ? "Login" : "Register"}
