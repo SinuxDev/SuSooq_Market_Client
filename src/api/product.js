@@ -1,94 +1,45 @@
 import { axiosInstance } from "./axiosInstance";
 
-// Sold Products
-export const getSoldProducts = async (payload) => {
+// Combined API Calls
+const FetchProduct = async (endPoint, payload = {}, method = "get") => {
   try {
-    const response = await axiosInstance.post("/create-product", payload, {
+    const response = await axiosInstance({
+      method,
+      url: endPoint,
+      data: payload,
       validateStatus: () => true,
     });
-
     return response.data;
   } catch (err) {
     return err.message;
   }
 };
+
+// Create Product
+export const getSoldProducts = async (payload) =>
+  FetchProduct("/create-product", payload, "post");
 
 // Get all products
-export const getAllProducts = async () => {
-  try {
-    const response = await axiosInstance.get("/products", {
-      validateStatus: () => true,
-    });
-
-    return response.data;
-  } catch (err) {
-    return err.message;
-  }
-};
+export const getAllProducts = async () => FetchProduct("/products");
 
 // Get single product
-export const getOldProduct = async (id) => {
-  try {
-    const response = await axiosInstance.get(`/product/${id}`, {
-      validateStatus: () => true,
-    });
-
-    return response.data;
-  } catch (err) {
-    return err.message;
-  }
-};
+export const getOldProduct = async (id) => FetchProduct(`/product/${id}`);
 
 // Update product
-export const updateProducts = async (payload) => {
-  try {
-    const response = await axiosInstance.put("/update-product", payload, {
-      validateStatus: () => true,
-    });
-
-    return response.data;
-  } catch (err) {
-    return err.message;
-  }
-};
+export const updateProducts = async (payload) =>
+  FetchProduct("/update-product", payload, "put");
 
 // Delete product
-export const deleteProduct = async (id) => {
-  try {
-    const response = await axiosInstance.delete(`/delete-product/${id}`, {
-      validateStatus: () => true,
-    });
-
-    return response.data;
-  } catch (err) {
-    return err.message;
-  }
-};
+export const deleteProduct = async (id) =>
+  FetchProduct(`/delete-product/${id}`, {}, "delete");
 
 // Upload product images
-export const uploadProductImages = async (formData) => {
-  try {
-    const response = await axiosInstance.post("/upload-images", formData, {
-      validateStatus: () => true,
-    });
-
-    return response.data;
-  } catch (err) {
-    return err.message;
-  }
-};
+export const uploadProductImages = async (formData) =>
+  FetchProduct("/upload-images", formData, "post");
 
 // Get Product Images (Saved Images)
-export const getProductImages = async (id) => {
-  try {
-    const response = await axiosInstance.get(`/product-images/${id}`, {
-      validateStatus: () => true,
-    });
-    return response.data;
-  } catch (err) {
-    return err.message;
-  }
-};
+export const getProductImages = async (id) =>
+  FetchProduct(`/product-images/${id}`);
 
 // Delete Product Images (Saved Images)
 export const deleteProductImages = async (payload) => {
