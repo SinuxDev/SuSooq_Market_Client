@@ -31,7 +31,7 @@ const Index = () => {
         setProducts={setProducts}
         getAllPublicProducts={getAllPublicProducts}
       />
-      <Filter products={products} />
+      <Filter products={products} setProducts={setProducts} />
       <div className="flex max-w-4xl flex-wrap mx-auto flex-row">
         {products.map((product) => (
           <Cards key={product._id} product={product} />
