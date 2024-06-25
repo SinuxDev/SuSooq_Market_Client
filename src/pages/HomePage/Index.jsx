@@ -27,7 +27,7 @@ const Index = () => {
 
   return (
     <>
-      <Hero />
+      <Hero setProducts={setProducts} />
       <Filter products={products} />
       <div className="flex max-w-4xl flex-wrap mx-auto flex-row">
         {products.map((product) => (
