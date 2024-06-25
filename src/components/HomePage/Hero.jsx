@@ -8,7 +8,7 @@ import {
 import { useState } from "react";
 import { getFilteredProducts } from "../../api/product";
 
-const Hero = ({ setProducts }) => {
+const Hero = ({ setProducts, getAllPublicProducts }) => {
   const [searchQuery, setSearchQuery] = useState("");
 
   const searchQueryHandler = async () => {
@@ -24,6 +24,11 @@ const Hero = ({ setProducts }) => {
     }
   };
 
+  const ClearHandler = () => {
+    setSearchQuery("");
+    getAllPublicProducts();
+  };
+
   return (
     <>
       <div className="w-full text-center my-8">
@@ -35,21 +40,7 @@ const Hero = ({ setProducts }) => {
           vibrant community. Enjoy exclusive deals and a seamless shopping
           experience. Join us today!
         </p>
-        <div className="max-w-sm mx-auto relative">
-          <input
-            type="text"
-            className="bg-gray-200 p-2 rounded-xl w-full"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-          />
-          <MagnifyingGlassIcon
-            width={20}
-            height={20}
-            className="text-blue-600 absolute top-2 right-2 cursor-pointer"
-            onClick={searchQueryHandler}
-          />
-        </div>
-        <div className="flex items-center justify-between max-w-6xl mx-auto mt-16 mb-20">
+        <div className="flex items-center justify-between max-w-6xl mx-auto mt-16 mb-10">
           <div className="flex items-center flex-col w-1/3">
             <div className="bg-blue-500 p-1 w-1/6 mx-auto rounded-xl mb-2">
               <CloudArrowUpIcon
@@ -92,14 +83,39 @@ const Hero = ({ setProducts }) => {
             </p>
           </div>
         </div>
+        <hr className="border border-gray-300 mb-12" />
+        <div className="max-w-sm mx-auto  flex items-center gap-2 ">
+          <div className="relative w-full">
+            <input
+              type="text"
+              className="bg-gray-200 p-2 rounded-xl w-full"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+            <MagnifyingGlassIcon
+              width={20}
+              height={20}
+              className="text-blue-600 absolute top-2 right-2 cursor-pointer"
+              onClick={searchQueryHandler}
+            />
+          </div>
+          <button
+            type="button"
+            className="text-sm font-medium text-white bg-blue-600 p-2 rounded-md "
+            onClick={() => ClearHandler()}
+          >
+            {" "}
+            Clear{" "}
+          </button>
+        </div>
       </div>
-      <hr className="border border-gray-300 mb-12" />
     </>
   );
 };
 
 Hero.propTypes = {
   setProducts: PropTypes.func,
+  getAllPublicProducts: PropTypes.func,
 };
 
 export default Hero;
