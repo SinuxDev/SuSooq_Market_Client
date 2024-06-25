@@ -39,7 +39,7 @@ const Cards = ({ product }) => {
 };
 
 Cards.propTypes = {
-  product: PropTypes.array.isRequired,
+  product: PropTypes.any,
 };
 
 export default Cards;
