@@ -61,3 +61,15 @@ export const deleteProductImages = async (payload) => {
 
 // Public Products API
 export const getPublicProducts = async () => FetchProduct("/api/products");
+
+// Filter Products
+export const getFilteredProducts = async (key, value) => {
+  try {
+    const response = await axiosInstance.get(
+      `/api/products/filters?${key}=${value}`
+    );
+    return response.data;
+  } catch (err) {
+    return err.message;
+  }
+};
