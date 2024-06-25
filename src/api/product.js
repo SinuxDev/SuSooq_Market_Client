@@ -62,6 +62,10 @@ export const deleteProductImages = async (payload) => {
 // Public Products API
 export const getPublicProducts = async () => FetchProduct("/api/products");
 
+// Get Single Product Details By ID
+export const getSingleProductDetails = async (id) =>
+  FetchProduct(`/api/products/${id}`);
+
 // Filter Products
 export const getFilteredProducts = async (key, value) => {
   try {
