@@ -8,10 +8,15 @@ import {
 import { useState } from "react";
 import { getFilteredProducts } from "../../api/product";
 
+import { useDispatch } from "react-redux";
+import { setProcessing } from "../../store/slices/loaderSlice";
+
 const Hero = ({ setProducts, getAllPublicProducts }) => {
   const [searchQuery, setSearchQuery] = useState("");
+  const dispatch = useDispatch();
 
   const searchQueryHandler = async () => {
+    dispatch(setProcessing(true));
     try {
       const response = await getFilteredProducts("searchQuery", searchQuery);
       if (response.isSuccess) {
@@ -22,6 +27,7 @@ const Hero = ({ setProducts, getAllPublicProducts }) => {
     } catch (err) {
       console.log(err.message);
     }
+    dispatch(setProcessing(false));
   };
 
   const ClearHandler = () => {
