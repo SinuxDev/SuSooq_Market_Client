@@ -1,12 +1,18 @@
 import PropTypes from "prop-types";
 import { getFilteredProducts } from "../../api/product";
 
+import { useDispatch } from "react-redux";
+import { setProcessing } from "../../store/slices/loaderSlice";
+
 const Filter = ({ products, setProducts }) => {
+  const dispatch = useDispatch();
+
   const uniqueCategories = [
     ...new Set(products.map((product) => product.category)),
   ];
 
   const categoryHandler = async (category) => {
+    dispatch(setProcessing(true));
     try {
       const response = await getFilteredProducts("category", category);
       if (response.isSuccess) {
@@ -18,6 +24,7 @@ const Filter = ({ products, setProducts }) => {
     } catch (err) {
       console.error(err.message);
     }
+    dispatch(setProcessing(false));
   };
 
   return (
