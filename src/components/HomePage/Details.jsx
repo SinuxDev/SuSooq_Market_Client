@@ -58,7 +58,10 @@ const Details = () => {
                   alt={product.name}
                   className="w-full h-96 object-contain object-center overflow-hidden "
                 />
-                <p> This Product is not include img </p>
+                <p className="font-medium my-2 text-red-500">
+                  {" "}
+                  This Product is not include img{" "}
+                </p>
               </>
             )}
           </div>
