@@ -83,7 +83,7 @@ const Details = () => {
                   {product.category.toUpperCase().replace("_", " ")}{" "}
                 </span>
               </div>
-              <div>
+              <div className="mr-4">
                 <span className="font-bold text-gray-700 text-sm">
                   Product Used :{" "}
                 </span>
