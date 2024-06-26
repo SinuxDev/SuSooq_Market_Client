@@ -63,35 +63,54 @@ const Details = () => {
             )}
           </div>
           <div className="w-2/3 px-20">
-            <h1> {product.name} </h1>
-            <h1> {product.description} </h1>
-            <hr />
-            <h1>Informations</h1>
-            <div>
-              <div>
-                <p>Type</p>
-                <p>Used For</p>
+            <h1 className="text-4xl font-bold"> {product.name} </h1>
+            <div className="my-2">
+              <h2 className="text-xl">About This Product</h2>
+              <p className="text-sm"> {product.description} </p>
+            </div>
+            <hr className="border text-gray-300 mb-2" />
+            <h1 className="font-bold mt-5">Product Information</h1>
+            <div className="flex my-2 flex-wrap">
+              <div className="mr-4">
+                <span className="font-bold text-gray-700 text-sm">
+                  Product Type :{" "}
+                </span>
+                <span className="text-gray-500 text-sm">
+                  {" "}
+                  {product.category.toUpperCase().replace("_", " ")}{" "}
+                </span>
               </div>
               <div>
-                <p> {product.category.toUpperCase().replace("_", " ")} </p>
-                <p> {product.usedFor} </p>
+                <span className="font-bold text-gray-700 text-sm">
+                  Product Used :{" "}
+                </span>
+                <span className="text-gray-500 text-sm">
+                  {" "}
+                  {product.usedFor}{" "}
+                </span>
+              </div>
+              <div>
+                <span className="font-bold text-gray-700 text-sm">
+                  Product Price :{" "}
+                </span>
+                <span className="text-gray-500 text-sm"> {product.price} </span>
               </div>
             </div>
             <div>
               {product.status_details.map((status, index) => (
-                <div key={index}>
+                <div key={index} className="flex flex-wrap">
                   {Object.keys(status).map((key) => (
-                    <p key={key}>
-                      {key.replace("_", " ")} : {status[key] ? "Yes" : "No"}
+                    <p key={key} className="mr-5 my-2">
+                      {key.toUpperCase().replace("_", " ")} :{" "}
+                      {status[key] ? "Yes" : "No"}
                     </p>
                   ))}
                 </div>
               ))}
             </div>
-            <hr />
+            <hr className="border text-gray-300 mb-2" />
             <h1>Seller Information</h1>
           </div>
-          {/* Remining , So Tired , Need to Relax , Can't even write UI */}
         </>
       )}
     </section>
