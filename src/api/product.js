@@ -66,6 +66,17 @@ export const getPublicProducts = async () => FetchProduct("/api/products");
 export const getSingleProductDetails = async (id) =>
   FetchProduct(`/api/products/${id}`);
 
+// Save Product
+export const saveProduct = async (id) =>
+  FetchProduct(`/save-products/${id}`, {}, "post");
+
+// Get Saved Products
+export const getSavedProducts = async () => FetchProduct("/save-products");
+
+// Unsave Product
+export const unSaveProduct = async (id) =>
+  FetchProduct(`/unsave-products/${id}`, {}, "delete");
+
 // Filter Products
 export const getFilteredProducts = async (key, value) => {
   try {
