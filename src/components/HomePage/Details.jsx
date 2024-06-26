@@ -26,7 +26,7 @@ const Details = () => {
       console.log(err.message);
     }
     dispatch(setProcessing(false));
-  }, [productID.id]);
+  }, [productID.id, dispatch]);
 
   useEffect(() => {
     getProductDetails();
