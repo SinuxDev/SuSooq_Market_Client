@@ -8,6 +8,7 @@ import Profile from "./pages/profile/Index";
 import Admin from "./pages/admin/Index";
 import AuthProvider from "./providers/AuthProvider";
 import Details from "./components/HomePage/Details";
+import SaveProduct from "./pages/saveProduct/Index";
 
 const App = () => {
   const router = createBrowserRouter([
@@ -53,6 +54,15 @@ const App = () => {
         {
           path: "/products/:id",
           element: <Details />,
+        },
+        {
+          path: "/save-products",
+          element: (
+            <AuthProvider>
+              {" "}
+              <SaveProduct />{" "}
+            </AuthProvider>
+          ),
         },
       ],
     },
