@@ -1,7 +1,7 @@
 import Hero from "../../components/HomePage/Hero";
 import Filter from "../../components/HomePage/Filter";
 import Cards from "../../components/HomePage/Cards";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { getPublicProducts } from "../../api/product";
 import { message } from "antd";
 
@@ -15,7 +15,7 @@ const Index = () => {
   const dispatch = useDispatch();
   const { isProcessing } = useSelector((state) => state.reducer.isProcessing);
 
-  const getAllPublicProducts = async () => {
+  const getAllPublicProducts = useCallback(async () => {
     dispatch(setProcessing(true));
     try {
       const response = await getPublicProducts();
@@ -28,11 +28,11 @@ const Index = () => {
       message.error(err.message);
     }
     dispatch(setProcessing(false));
-  };
+  }, [dispatch]);
 
   useEffect(() => {
     getAllPublicProducts();
-  }, []);
+  }, [getAllPublicProducts]);
 
   return (
     <>
