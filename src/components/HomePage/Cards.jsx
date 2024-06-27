@@ -4,8 +4,10 @@ import { BookmarkIcon, BookmarkSlashIcon } from "@heroicons/react/24/outline";
 import { Card, message } from "antd";
 import { Link } from "react-router-dom";
 import { saveProduct, unSaveProduct } from "../../api/product";
+import { useSelector } from "react-redux";
 
 const Cards = ({ product, saved, getSaveProductLists }) => {
+  const { user } = useSelector((state) => state.reducer.user);
   const handleProductSaveStatus = async (id, action) => {
     try {
       const response =
@@ -58,26 +60,30 @@ const Cards = ({ product, saved, getSaveProductLists }) => {
             <p className="text-xl font-bold">{product.name}</p>
             <p className="text-lg font-semibold"> Price : $ {product.price} </p>
 
-            {saved ? (
-              <BookmarkSlashIcon
-                width={20}
-                height={20}
-                className="text-blue-600 cursor-pointer"
-                onClick={(event) => {
-                  event.stopPropagation();
-                  UnSavedProductHandler(product._id);
-                }}
-              />
-            ) : (
-              <BookmarkIcon
-                width={20}
-                height={20}
-                className="text-blue-600 cursor-pointer"
-                onClick={(event) => {
-                  event.stopPropagation();
-                  savedProductHandler(product._id);
-                }}
-              />
+            {user && (
+              <>
+                {saved ? (
+                  <BookmarkSlashIcon
+                    width={20}
+                    height={20}
+                    className="text-blue-600 cursor-pointer"
+                    onClick={(event) => {
+                      event.stopPropagation();
+                      UnSavedProductHandler(product._id);
+                    }}
+                  />
+                ) : (
+                  <BookmarkIcon
+                    width={20}
+                    height={20}
+                    className="text-blue-600 cursor-pointer"
+                    onClick={(event) => {
+                      event.stopPropagation();
+                      savedProductHandler(product._id);
+                    }}
+                  />
+                )}
+              </>
             )}
           </div>
           <Link to={`/products/${product._id}`}>
