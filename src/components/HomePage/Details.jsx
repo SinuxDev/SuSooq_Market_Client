@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { getSingleProductDetails } from "../../api/product";
 import cardImg from "../../images/cardImg.png";
 
@@ -7,10 +7,13 @@ import { useSelector, useDispatch } from "react-redux";
 import { setProcessing } from "../../store/slices/loaderSlice";
 import { RotatingLines } from "react-loader-spinner";
 
+import { ArrowLeftIcon } from "@heroicons/react/24/solid";
+
 const Details = () => {
   const [product, setProduct] = useState({});
   const [selectedImage, setSelectedImage] = useState(0);
   const productID = useParams();
+  const navigate = useNavigate();
 
   const dispatch = useDispatch();
   const { isProcessing } = useSelector((state) => state.reducer.isProcessing);
@@ -91,13 +94,22 @@ const Details = () => {
                 )}
               </div>
               <div className="w-2/3 px-20">
-                <h1 className="text-4xl font-bold"> {product.name} </h1>
+                <div className="flex items-center justify-between">
+                  <h1 className="text-4xl font-bold"> {product.name} </h1>
+                  <span className="bg-blue-500 text-white p-2 rounded-lg cursor-pointer">
+                    <ArrowLeftIcon
+                      width={30}
+                      height={20}
+                      onClick={() => navigate(-1)}
+                    />
+                  </span>
+                </div>
                 <div className="my-2">
                   <h2 className="text-xl">About This Product</h2>
                   <p className="text-sm"> {product.description} </p>
                 </div>
                 <hr className="border text-gray-300 mb-2" />
-                <h1 className="font-bold mt-5">Product Information</h1>
+                <h1 className="font-bold mt-5 text-2xl">Product Information</h1>
                 <div className="flex my-2 flex-wrap">
                   <div className="mr-4">
                     <span className="font-bold text-gray-700 text-sm">
@@ -143,6 +155,11 @@ const Details = () => {
                 <h1 className="text-xl font-bold">Seller Information</h1>
                 <h3> From : {product.seller.name} </h3>
                 <h3> Email : {product.seller.email} </h3>
+                <p>
+                  {" "}
+                  {product.seller.name} is certified product owner. Trust By
+                  Many Customers{" "}
+                </p>
               </div>
             </>
           )}
