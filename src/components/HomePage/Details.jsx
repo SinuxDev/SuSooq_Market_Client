@@ -7,7 +7,8 @@ import { useSelector, useDispatch } from "react-redux";
 import { setProcessing } from "../../store/slices/loaderSlice";
 import { RotatingLines } from "react-loader-spinner";
 
-import { ArrowLeftIcon } from "@heroicons/react/24/solid";
+import { ArrowLeftIcon, PaperAirplaneIcon } from "@heroicons/react/24/solid";
+import { Button, Form, Input } from "antd";
 
 const Details = () => {
   const [product, setProduct] = useState({});
@@ -17,6 +18,7 @@ const Details = () => {
 
   const dispatch = useDispatch();
   const { isProcessing } = useSelector((state) => state.reducer.isProcessing);
+  const { user } = useSelector((state) => state.reducer.user);
 
   const getProductDetails = useCallback(async () => {
     dispatch(setProcessing(true));
@@ -160,6 +162,60 @@ const Details = () => {
                   {product.seller.name} is certified product owner. Trust By
                   Many Customers{" "}
                 </p>
+                <hr className="border text-gray-300 my-2" />
+
+                <h1 className="text-xl font-bold my-2">Bids</h1>
+                {user && (
+                  <Form className="w-full">
+                    <div className="flex items-center gap-2 w-full">
+                      <Form.Item
+                        className="w-1/2"
+                        name="comment"
+                        rules={[
+                          {
+                            required: true,
+                            message: "Please input your comment!",
+                          },
+                          {
+                            min: 3,
+                            message:
+                              "Comment must be at least 3 characters long",
+                          },
+                        ]}
+                        hasFeedback
+                      >
+                        <Input placeholder="Write your comment..." />
+                      </Form.Item>
+                      <Form.Item
+                        name="phone_num"
+                        rules={[
+                          {
+                            required: true,
+                            message: "Please input your phone number!",
+                          },
+                          {
+                            min: 10,
+                            message:
+                              "Phone number must be at least 10 characters long",
+                          },
+                        ]}
+                        hasFeedback
+                      >
+                        <Input placeholder="Phone Contact" />
+                      </Form.Item>
+                      <Form.Item>
+                        <Button type="primary" htmlType="submit">
+                          <PaperAirplaneIcon
+                            width={20}
+                            height={20}
+                            className="rotate-[-45deg]"
+                          />
+                          Send
+                        </Button>
+                      </Form.Item>
+                    </div>
+                  </Form>
+                )}
               </div>
             </>
           )}
