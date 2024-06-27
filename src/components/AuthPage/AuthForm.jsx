@@ -1,4 +1,4 @@
-import { Button, Form, Input, message } from "antd";
+import { Button, Form, Input, message, Card } from "antd";
 import { registerUser, loginUser } from "../../api/auth";
 
 import PropTypes from "prop-types";
@@ -36,108 +36,121 @@ const AuthForm = ({ isLogin }) => {
   };
 
   return (
-    <section className="w-full flex mt-36 justify-center">
+    <section className="w-full flex mt-28 justify-center">
       <div className="w-[450px]">
-        <h1 className="text-3xl font-bold mb-4 text-blue-600">
-          SuSooq.IO - {isLogin ? "Login" : "Register"}
-        </h1>
-        <Form
-          layout="vertical"
-          onFinish={handleOnFinish}
-          initialValues={{
-            remember: true,
-          }}
+        <Card
+          hoverable
+          className="rounded-lg overflow-hidden shadow-lg p-2"
+          title={
+            isLogin ? (
+              <h1 className="text-2xl font-bold mb-4 text-blue-600 text-center">
+                SuSooq - Login Account
+              </h1>
+            ) : (
+              <h1 className="text-2xl font-bold mb-4 text-blue-600 text-center">
+                SuSooq - Register Account
+              </h1>
+            )
+          }
         >
-          {!isLogin && (
+          <Form
+            layout="vertical"
+            onFinish={handleOnFinish}
+            initialValues={{
+              remember: true,
+            }}
+          >
+            {!isLogin && (
+              <Form.Item
+                name="name"
+                label="Name"
+                rules={[
+                  {
+                    required: true,
+                    message: "Please input your name!",
+                  },
+                  {
+                    min: 3,
+                    message: "Name must be at least 3 characters long",
+                  },
+                ]}
+                hasFeedback
+              >
+                <Input placeholder="username...."></Input>
+              </Form.Item>
+            )}
             <Form.Item
-              name="name"
-              label="Name"
+              name="email"
+              label="Email"
               rules={[
                 {
-                  required: true,
-                  message: "Please input your name!",
+                  type: "email",
+                  message: "The input is not valid E-mail!",
                 },
                 {
-                  min: 3,
-                  message: "Name must be at least 3 characters long",
+                  required: true,
+                  message: "Please input your email!",
                 },
               ]}
               hasFeedback
             >
-              <Input placeholder="username...."></Input>
+              <Input placeholder="email...."></Input>
             </Form.Item>
-          )}
-          <Form.Item
-            name="email"
-            label="Email"
-            rules={[
-              {
-                type: "email",
-                message: "The input is not valid E-mail!",
-              },
-              {
-                required: true,
-                message: "Please input your email!",
-              },
-            ]}
-            hasFeedback
-          >
-            <Input placeholder="email...."></Input>
-          </Form.Item>
-          <Form.Item
-            name="password"
-            label="Password"
-            rules={[
-              {
-                required: true,
-                message: "Please input your password!",
-              },
-              {
-                min: 5,
-                message: "Password must be at least 5 characters long",
-              },
-            ]}
-            hasFeedback
-          >
-            <Input.Password placeholder="password...."></Input.Password>
-          </Form.Item>
-          <Form.Item>
-            <Button
-              type="primary"
-              htmlType="submit"
-              className="w-full"
-              disabled={isProcessing}
+            <Form.Item
+              name="password"
+              label="Password"
+              rules={[
+                {
+                  required: true,
+                  message: "Please input your password!",
+                },
+                {
+                  min: 5,
+                  message: "Password must be at least 5 characters long",
+                },
+              ]}
+              hasFeedback
             >
-              {isLogin && !isProcessing && "Login"}
-              {!isLogin && !isProcessing && "Register"}
-              {isProcessing && isLogin && "Logging in..."}
-              {isProcessing && !isLogin && "Registering..."}
-            </Button>
-          </Form.Item>
-          <p>
-            {isLogin ? (
-              <p>
-                Do not have an account ?{" "}
-                <Link
-                  to={"/register"}
-                  className="font-medium text-blue-600 hover:text-blue-400"
-                >
-                  Register Here
-                </Link>
-              </p>
-            ) : (
-              <p>
-                Already have an account ?{" "}
-                <Link
-                  to={"/login"}
-                  className="font-medium text-blue-600 hover:text-blue-400"
-                >
-                  Login Here
-                </Link>
-              </p>
-            )}
-          </p>
-        </Form>
+              <Input.Password placeholder="password...."></Input.Password>
+            </Form.Item>
+            <Form.Item>
+              <Button
+                type="primary"
+                htmlType="submit"
+                className="w-full"
+                disabled={isProcessing}
+              >
+                {isLogin && !isProcessing && "Login"}
+                {!isLogin && !isProcessing && "Register"}
+                {isProcessing && isLogin && "Logging in..."}
+                {isProcessing && !isLogin && "Registering..."}
+              </Button>
+            </Form.Item>
+            <p>
+              {isLogin ? (
+                <p>
+                  Do not have an account ?{" "}
+                  <Link
+                    to={"/register"}
+                    className="font-medium text-blue-600 hover:text-blue-400"
+                  >
+                    Register Here
+                  </Link>
+                </p>
+              ) : (
+                <p>
+                  Already have an account ?{" "}
+                  <Link
+                    to={"/login"}
+                    className="font-medium text-blue-600 hover:text-blue-400"
+                  >
+                    Login Here
+                  </Link>
+                </p>
+              )}
+            </p>
+          </Form>
+        </Card>
       </div>
     </section>
   );
