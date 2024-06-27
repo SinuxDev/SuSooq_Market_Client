@@ -85,7 +85,7 @@ const Details = () => {
                     />
                     <p className="font-medium my-2 text-red-500">
                       {" "}
-                      This Product is not include img{" "}
+                      This Product is not include Images{" "}
                     </p>
                   </>
                 )}
@@ -140,7 +140,9 @@ const Details = () => {
                   ))}
                 </div>
                 <hr className="border text-gray-300 mb-2" />
-                <h1>Seller Information</h1>
+                <h1 className="text-xl font-bold">Seller Information</h1>
+                <h3> From : {product.seller.name} </h3>
+                <h3> Email : {product.seller.email} </h3>
               </div>
             </>
           )}
