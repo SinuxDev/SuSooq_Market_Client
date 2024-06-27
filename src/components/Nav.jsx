@@ -1,10 +1,23 @@
 import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
-import { UserIcon, BookmarkIcon } from "@heroicons/react/24/solid";
+import { setUser } from "../store/slices/userSlice";
+
+import {
+  UserIcon,
+  BookmarkIcon,
+  ArrowLeftEndOnRectangleIcon,
+} from "@heroicons/react/24/solid";
 
 const Nav = () => {
   const { user } = useSelector((state) => state.reducer.user);
+  const dispatch = useDispatch();
+
+  const logout = () => {
+    localStorage.removeItem("token");
+    window.location.reload();
+    dispatch(setUser(null));
+  };
   return (
     <nav className=" flex items-center justify-between text-blue-600 py-4 mb-4">
       <Link className="font-bold text-2xl" to={"/"}>
@@ -20,7 +33,7 @@ const Nav = () => {
           {user.role === "user" && (
             <Link to={"/profile"} className=" px-2 py-1 flex items-end gap-1">
               {" "}
-              <UserIcon width={25} /> Profile
+              <UserIcon width={25} />
             </Link>
           )}
           {user.role === "admin" && (
@@ -37,6 +50,13 @@ const Nav = () => {
               {" "}
               <BookmarkIcon width={25} />
             </Link>
+          }
+          {
+            <ArrowLeftEndOnRectangleIcon
+              width={25}
+              onClick={logout}
+              className="cursor-pointer"
+            />
           }
         </div>
       ) : (
