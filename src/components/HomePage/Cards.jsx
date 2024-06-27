@@ -1,13 +1,21 @@
 import PropTypes from "prop-types";
 import SImage from "../../images/cardImg.png";
 import { BookmarkIcon, BookmarkSlashIcon } from "@heroicons/react/24/outline";
+import { BookmarkSlashIcon as Bookmark } from "@heroicons/react/24/solid";
 import { Card, message } from "antd";
 import { Link } from "react-router-dom";
 import { saveProduct, unSaveProduct } from "../../api/product";
 import { useSelector } from "react-redux";
 
-const Cards = ({ product, saved, getSaveProductLists }) => {
+const Cards = ({
+  product,
+  saved,
+  getSaveProductLists,
+  getAllPublicProducts,
+  savedProducts,
+}) => {
   const { user } = useSelector((state) => state.reducer.user);
+
   const handleProductSaveStatus = async (id, action) => {
     try {
       const response =
@@ -17,6 +25,7 @@ const Cards = ({ product, saved, getSaveProductLists }) => {
         if (action === "unsave") {
           getSaveProductLists();
         }
+        getAllPublicProducts();
         message.success(response.message);
       } else {
         throw new Error(response.message);
@@ -29,6 +38,10 @@ const Cards = ({ product, saved, getSaveProductLists }) => {
   const savedProductHandler = (id) => handleProductSaveStatus(id, "save");
 
   const UnSavedProductHandler = (id) => handleProductSaveStatus(id, "unsave");
+
+  const isProductSaved = (product) => {
+    return savedProducts?.some((p) => p.product_id?._id === product._id);
+  };
 
   return (
     <>
@@ -73,15 +86,26 @@ const Cards = ({ product, saved, getSaveProductLists }) => {
                     }}
                   />
                 ) : (
-                  <BookmarkIcon
-                    width={20}
-                    height={20}
-                    className="text-blue-600 cursor-pointer"
-                    onClick={(event) => {
-                      event.stopPropagation();
-                      savedProductHandler(product._id);
-                    }}
-                  />
+                  <>
+                    {isProductSaved(product) ? (
+                      <Bookmark
+                        width={20}
+                        height={20}
+                        className="text-blue-600 cursor-pointer"
+                        onClick={() => message.info("Product already saved")}
+                      />
+                    ) : (
+                      <BookmarkIcon
+                        width={20}
+                        height={20}
+                        className="text-blue-600 cursor-pointer"
+                        onClick={(event) => {
+                          event.stopPropagation();
+                          savedProductHandler(product._id);
+                        }}
+                      />
+                    )}
+                  </>
                 )}
               </>
             )}
@@ -99,6 +123,8 @@ Cards.propTypes = {
   product: PropTypes.any,
   saved: PropTypes.bool,
   getSaveProductLists: PropTypes.any,
+  savedProducts: PropTypes.any,
+  getAllPublicProducts: PropTypes.any,
 };
 
 export default Cards;
