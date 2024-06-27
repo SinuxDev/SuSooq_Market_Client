@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { getSingleProductDetails } from "../../api/product";
 import cardImg from "../../images/cardImg.png";
 
@@ -162,59 +162,68 @@ const Details = () => {
                   {product.seller.name} is certified product owner. Trust By
                   Many Customers{" "}
                 </p>
-                <hr className="border text-gray-300 my-2" />
 
-                <h1 className="text-xl font-bold my-2">Bids</h1>
-                {user && (
-                  <Form className="w-full">
-                    <div className="flex items-center gap-2 w-full">
-                      <Form.Item
-                        className="w-1/2"
-                        name="comment"
-                        rules={[
-                          {
-                            required: true,
-                            message: "Please input your comment!",
-                          },
-                          {
-                            min: 3,
-                            message:
-                              "Comment must be at least 3 characters long",
-                          },
-                        ]}
-                        hasFeedback
-                      >
-                        <Input placeholder="Write your comment..." />
-                      </Form.Item>
-                      <Form.Item
-                        name="phone_num"
-                        rules={[
-                          {
-                            required: true,
-                            message: "Please input your phone number!",
-                          },
-                          {
-                            min: 10,
-                            message:
-                              "Phone number must be at least 10 characters long",
-                          },
-                        ]}
-                        hasFeedback
-                      >
-                        <Input placeholder="Phone Contact" />
-                      </Form.Item>
-                      <Form.Item>
-                        <Button type="primary" htmlType="submit">
-                          <PaperAirplaneIcon
-                            width={20}
-                            height={20}
-                            className="rotate-[-45deg]"
-                          />
-                          Send
-                        </Button>
-                      </Form.Item>
-                    </div>
-                  </Form>
+                {user ? (
+                  <>
+                    <hr className="border text-gray-300 my-2" />
+
+                    <h1 className="text-xl font-bold my-2">Bids</h1>
+                    <Form className="w-full">
+                      <div className="flex items-center gap-2 w-full">
+                        <Form.Item
+                          className="w-1/2"
+                          name="comment"
+                          rules={[
+                            {
+                              required: true,
+                              message: "Please input your comment!",
+                            },
+                            {
+                              min: 3,
+                              message:
+                                "Comment must be at least 3 characters long",
+                            },
+                          ]}
+                          hasFeedback
+                        >
+                          <Input placeholder="Write your comment..." />
+                        </Form.Item>
+                        <Form.Item
+                          name="phone_num"
+                          rules={[
+                            {
+                              required: true,
+                              message: "Please input your phone number!",
+                            },
+                            {
+                              min: 10,
+                              message:
+                                "Phone number must be at least 10 characters long",
+                            },
+                          ]}
+                          hasFeedback
+                        >
+                          <Input placeholder="Phone Contact" />
+                        </Form.Item>
+                        <Form.Item>
+                          <Button type="primary" htmlType="submit">
+                            <PaperAirplaneIcon
+                              width={20}
+                              height={20}
+                              className="rotate-[-45deg]"
+                            />
+                            Send
+                          </Button>
+                        </Form.Item>
+                      </div>
+                    </Form>
+                  </>
+                ) : (
+                  <Link to={"/login"}>
+                    <p className="my-5 font-bold text-2xl text-center text-red-600">
+                      Login Or Register to bid this product
+                    </p>
+                  </Link>
                 )}
               </div>
             </>
