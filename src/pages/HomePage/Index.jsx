@@ -3,7 +3,6 @@ import Filter from "../../components/HomePage/Filter";
 import Cards from "../../components/HomePage/Cards";
 import { useCallback, useEffect, useState } from "react";
 import { getPublicProducts, getSavedProducts } from "../../api/product";
-import { message } from "antd";
 
 import { useSelector, useDispatch } from "react-redux";
 import { setProcessing } from "../../store/slices/loaderSlice";
@@ -30,7 +29,7 @@ const Index = () => {
           throw new Error(response.message);
         }
       } catch (err) {
-        message.error(err.message);
+        console.error(err.message);
       } finally {
         dispatch(setProcessing(false));
       }

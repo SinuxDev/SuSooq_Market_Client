@@ -1,5 +1,4 @@
 import { useCallback, useEffect, useState } from "react";
-import { message } from "antd";
 import { getSavedProducts } from "../../api/product";
 import Cards from "../../components/HomePage/Cards";
 import { useSelector, useDispatch } from "react-redux";
@@ -20,13 +19,12 @@ const Index = () => {
     try {
       const response = await getSavedProducts();
       if (response.isSuccess) {
-        message.success(response.message);
         setSavedProducts(response.savedProducts);
       } else {
         throw new Error(response.message);
       }
     } catch (err) {
-      message.error(err.message);
+      console.error(err.message);
     }
     dispatch(setProcessing(false));
   }, [dispatch]);
@@ -72,6 +70,11 @@ const Index = () => {
             </>
           )}
         </div>
+      )}
+      {savedProducts.length === 0 && (
+        <p className="font-medium text-red-600 my-2">
+          No Products Are Not Saved Yet
+        </p>
       )}
     </section>
   );
