@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
 import { setUser } from "../store/slices/userSlice";
@@ -12,12 +12,14 @@ import {
 const Nav = () => {
   const { user } = useSelector((state) => state.reducer.user);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const logout = () => {
+    navigate("/");
     localStorage.removeItem("token");
-    window.location.reload();
     dispatch(setUser(null));
   };
+
   return (
     <nav className=" flex items-center justify-between text-blue-600 py-4 mb-4">
       <Link className="font-bold text-2xl" to={"/"}>
