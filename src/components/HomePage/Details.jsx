@@ -10,7 +10,8 @@ import { RotatingLines } from "react-loader-spinner";
 import { ArrowLeftIcon, PaperAirplaneIcon } from "@heroicons/react/24/solid";
 import { Button, Form, Input, message } from "antd";
 
-import { saveNewBid } from "../../api/bid";
+import { saveNewBid, getAllBids } from "../../api/bid";
+import moment from "moment";
 
 const Details = () => {
   const [product, setProduct] = useState({});
@@ -18,7 +19,7 @@ const Details = () => {
   const productID = useParams();
   const navigate = useNavigate();
   const [isbidding, setIsBidding] = useState(false);
-  const [form] = Form.useForm();
+  const [bids, setBids] = useState([]);
 
   const dispatch = useDispatch();
   const { isProcessing } = useSelector((state) => state.reducer.isProcessing);
@@ -37,9 +38,16 @@ const Details = () => {
     dispatch(setProcessing(false));
   }, [productID.id, dispatch]);
 
-  useEffect(() => {
-    getProductDetails();
-  }, [getProductDetails]);
+  const getBids = useCallback(async () => {
+    try {
+      const response = await getAllBids(productID.id);
+      if (response.isSuccess) {
+        setBids(response.bids);
+      }
+    } catch (err) {
+      console.log(err.message);
+    }
+  }, [productID.id]);
 
   const onFinishHandler = async (values) => {
     setIsBidding(true);
@@ -51,7 +59,7 @@ const Details = () => {
     try {
       const response = await saveNewBid(values);
       if (response.isSuccess) {
-        form.resetFields();
+        getBids();
         message.success(response.message);
       } else {
         throw new Error(response.message);
@@ -62,6 +70,11 @@ const Details = () => {
       setIsBidding(false);
     }
   };
+
+  useEffect(() => {
+    getProductDetails();
+    getBids();
+  }, [getProductDetails, getBids]);
 
   return (
     <section
@@ -188,11 +201,35 @@ const Details = () => {
                   {product.seller.name} is certified product owner. Trust By
                   Many Customers{" "}
                 </p>
+                <hr className="border text-gray-300 my-2" />
+                <h1 className="text-xl font-bold my-2">Recent Bids</h1>
+                <div className="flex flex-wrap items-center justify-between">
+                  {!bids && bids.length === 0 && (
+                    <> No Bids Are Not place yet </>
+                  )}
+                  {bids &&
+                    bids.map((bid, index) => (
+                      <div key={index} className="my-3 w-1/3">
+                        <h5 className="font-medium text-base">
+                          {" "}
+                          {bid.buyer_id.name}{" "}
+                        </h5>
+                        <p className="text-xs text-gray-500">
+                          {" "}
+                          {moment(bid.createdAt).format("L")}{" "}
+                        </p>
+                        <p className="text-gray-600 text-sm font-medium">
+                          {" "}
+                          {bid.comment}{" "}
+                        </p>
+                      </div>
+                    ))}
+                </div>
                 {user && user._id !== product.seller._id && (
                   <>
                     <hr className="border text-gray-300 my-2" />
 
-                    <h1 className="text-xl font-bold my-2">Bids</h1>
+                    <h1 className="text-xl font-bold my-2">Place Your Bids</h1>
                     <Form className="w-full" onFinish={onFinishHandler}>
                       <div className="flex items-center gap-2 w-full">
                         <Form.Item
@@ -231,7 +268,7 @@ const Details = () => {
                           hasFeedback
                         >
                           <Input
-                            placeholder="Write your comment..."
+                            placeholder="Enter your phone number"
                             type="number"
                           />
                         </Form.Item>
