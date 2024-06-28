@@ -8,13 +8,17 @@ import { setProcessing } from "../../store/slices/loaderSlice";
 import { RotatingLines } from "react-loader-spinner";
 
 import { ArrowLeftIcon, PaperAirplaneIcon } from "@heroicons/react/24/solid";
-import { Button, Form, Input } from "antd";
+import { Button, Form, Input, message } from "antd";
+
+import { saveNewBid } from "../../api/bid";
 
 const Details = () => {
   const [product, setProduct] = useState({});
   const [selectedImage, setSelectedImage] = useState(0);
   const productID = useParams();
   const navigate = useNavigate();
+  const [isbidding, setIsBidding] = useState(false);
+  const [form] = Form.useForm();
 
   const dispatch = useDispatch();
   const { isProcessing } = useSelector((state) => state.reducer.isProcessing);
@@ -36,6 +40,28 @@ const Details = () => {
   useEffect(() => {
     getProductDetails();
   }, [getProductDetails]);
+
+  const onFinishHandler = async (values) => {
+    setIsBidding(true);
+
+    values.product_id = product._id;
+    values.seller_id = product.seller._id;
+    values.buyer_id = user._id;
+
+    try {
+      const response = await saveNewBid(values);
+      if (response.isSuccess) {
+        form.resetFields();
+        message.success(response.message);
+      } else {
+        throw new Error(response.message);
+      }
+    } catch (err) {
+      message.error(err.message);
+    } finally {
+      setIsBidding(false);
+    }
+  };
 
   return (
     <section
@@ -167,7 +193,7 @@ const Details = () => {
                     <hr className="border text-gray-300 my-2" />
 
                     <h1 className="text-xl font-bold my-2">Bids</h1>
-                    <Form className="w-full">
+                    <Form className="w-full" onFinish={onFinishHandler}>
                       <div className="flex items-center gap-2 w-full">
                         <Form.Item
                           className="w-1/2"
@@ -187,7 +213,9 @@ const Details = () => {
                         >
                           <Input placeholder="Write your comment..." />
                         </Form.Item>
+
                         <Form.Item
+                          className="w-1/3"
                           name="phone_num"
                           rules={[
                             {
@@ -202,17 +230,33 @@ const Details = () => {
                           ]}
                           hasFeedback
                         >
-                          <Input placeholder="Phone Contact" />
+                          <Input
+                            placeholder="Write your comment..."
+                            type="number"
+                          />
                         </Form.Item>
+
                         <Form.Item>
-                          <Button type="primary" htmlType="submit">
-                            <PaperAirplaneIcon
-                              width={20}
-                              height={20}
-                              className="rotate-[-45deg]"
-                            />
-                            Send
-                          </Button>
+                          {!isbidding && (
+                            <Button type="primary" htmlType="submit">
+                              <PaperAirplaneIcon
+                                width={20}
+                                height={20}
+                                className="rotate-[-45deg]"
+                              />
+                              Send
+                            </Button>
+                          )}
+                          {isbidding && (
+                            <Button type="primary" htmlType="submit">
+                              <PaperAirplaneIcon
+                                width={20}
+                                height={20}
+                                className="rotate-[-45deg]"
+                              />
+                              Submitting......
+                            </Button>
+                          )}
                         </Form.Item>
                       </div>
                     </Form>
