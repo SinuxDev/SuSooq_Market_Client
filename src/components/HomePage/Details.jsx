@@ -12,6 +12,7 @@ import { Button, Form, Input, message } from "antd";
 
 import { saveNewBid, getAllBids } from "../../api/bid";
 import moment from "moment";
+import { pushNotification } from "../../api/notification";
 
 const Details = () => {
   const [product, setProduct] = useState({});
@@ -61,6 +62,14 @@ const Details = () => {
       if (response.isSuccess) {
         getBids();
         message.success(response.message);
+
+        await pushNotification({
+          title: "New Bid Placed",
+          message: `New Bid Placed on ${product.name} by ${user.name}`,
+          product_id: product._id,
+          seller_id: product.seller._id,
+          phone_number: values.phone_num,
+        });
       } else {
         throw new Error(response.message);
       }
@@ -204,9 +213,7 @@ const Details = () => {
                 <hr className="border text-gray-300 my-2" />
                 <h1 className="text-xl font-bold my-2">Recent Bids</h1>
                 <div className="flex flex-wrap items-center justify-between">
-                  {!bids && bids.length === 0 && (
-                    <> No Bids Are Not place yet </>
-                  )}
+                  {bids.length === 0 && <> No Bids Are Not place yet </>}
                   {bids &&
                     bids.map((bid, index) => (
                       <div key={index} className="my-3 w-1/3">
