@@ -4,10 +4,14 @@ import ManageProduct from "./ManageProduct";
 import General from "./General";
 import { getAllProducts } from "../../api/product";
 import { useState, useEffect, useCallback } from "react";
+import { getNotifications } from "../../api/notification";
+import NotificationsAlert from "./NotificationsAlert";
+import { BellAlertIcon } from "@heroicons/react/24/solid";
 
 const Index = () => {
   const [activeTabKey, setActiveTabKey] = useState("1");
   const [products, setProducts] = useState([]);
+  const [notifications, setNotifications] = useState([]);
   const [editMode, setEditMode] = useState(false);
   const [editProductId, setEditProductId] = useState(null);
   const [manageTabKey, setManageTabKey] = useState("1");
@@ -26,13 +30,28 @@ const Index = () => {
     }
   }, [setProducts]);
 
+  const getNoti = useCallback(async () => {
+    try {
+      const response = await getNotifications();
+
+      if (response.isSuccess) {
+        setNotifications(response.notifications);
+      } else {
+        throw new Error(response.message);
+      }
+    } catch (err) {
+      message.error(err.message);
+    }
+  }, []);
+
   useEffect(() => {
     if (activeTabKey === "1") {
       setEditMode(false);
       setEditProductId(null);
     }
     getProducts();
-  }, [getProducts, activeTabKey]);
+    getNoti();
+  }, [getProducts, activeTabKey, getNoti]);
 
   const items = [
     {
@@ -64,8 +83,19 @@ const Index = () => {
     },
     {
       key: "3",
-      label: "Notifications",
-      children: "Notifications Content",
+      label: (
+        <span className="flex items-start gap-2">
+          <BellAlertIcon width={20} />
+          Notifications
+          <span className="text-red-600 italic">
+            {" "}
+            {notifications && notifications.length > 0
+              ? notifications.length
+              : "0"}{" "}
+          </span>
+        </span>
+      ),
+      children: <NotificationsAlert notifications={notifications} />,
     },
     {
       key: "4",
