@@ -71,7 +71,7 @@ const Index = () => {
           )}
         </div>
       )}
-      {savedProducts.length === 0 && (
+      {savedProducts.length === 0 && !isProcessing && (
         <p className="font-medium text-red-600 my-2">
           No Products Are Not Saved Yet
         </p>

@@ -162,8 +162,7 @@ const Details = () => {
                   {product.seller.name} is certified product owner. Trust By
                   Many Customers{" "}
                 </p>
-
-                {user ? (
+                {user && user._id !== product.seller._id && (
                   <>
                     <hr className="border text-gray-300 my-2" />
 
@@ -218,12 +217,18 @@ const Details = () => {
                       </div>
                     </Form>
                   </>
-                ) : (
+                )}{" "}
+                {!user && (
                   <Link to={"/login"}>
                     <p className="my-5 font-bold text-2xl text-center text-red-600">
                       Login Or Register to bid this product
                     </p>
                   </Link>
+                )}
+                {user._id === product.seller._id && (
+                  <p className="my-5 font-bold text-2xl text-center text-red-600">
+                    You cannot bid your own product
+                  </p>
                 )}
               </div>
             </>
