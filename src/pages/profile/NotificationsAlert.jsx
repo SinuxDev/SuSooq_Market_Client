@@ -2,27 +2,42 @@ import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import moment from "moment";
 import { Link } from "react-router-dom";
-import { markAsRead } from "../../api/notification";
+import {
+  markAsRead,
+  deleteNotification,
+  deleteAllNotifications,
+} from "../../api/notification";
 import { message } from "antd";
 
 const NotificationsAlert = ({ notifications }) => {
   const [localNotifications, setLocalNotifications] = useState([]);
 
-  // Function to update notification as read
-  const updateNoti = async (id) => {
+  // Function to update notification as read and delete
+  const updateNoti = async (id = null, status = "") => {
     try {
-      const response = await markAsRead(id);
+      const response = await (status === "mark-as-read"
+        ? markAsRead(id)
+        : status === "delete-all-notifications"
+          ? deleteAllNotifications()
+          : deleteNotification(id));
       if (response.isSuccess) {
         message.success(response.message);
 
-        // Update local state to mark notification as read
-        setLocalNotifications((prevNotifications) =>
-          prevNotifications.map((notification) =>
-            notification._id === id
-              ? { ...notification, isRead: true }
-              : notification
-          )
-        );
+        if (status === "mark-as-read") {
+          setLocalNotifications((prev) =>
+            prev.map((notification) =>
+              notification._id === id
+                ? { ...notification, isRead: true }
+                : notification
+            )
+          );
+        } else if (status === "delete-all-notifications") {
+          setLocalNotifications([]);
+        } else {
+          setLocalNotifications((prev) =>
+            prev.filter((notification) => notification._id !== id)
+          );
+        }
       } else {
         throw new Error(response.message);
       }
@@ -39,7 +54,16 @@ const NotificationsAlert = ({ notifications }) => {
 
   return (
     <section>
-      <h1 className="text-3xl font-semibold my-2">Notifications</h1>
+      <div className="flex items-center justify-between">
+        <h1 className="text-3xl font-semibold my-2">Notifications</h1>
+        <button
+          className="bg-blue-600 text-white p-2 rounded-lg"
+          onClick={() => updateNoti("", "delete-all-notifications")}
+        >
+          {" "}
+          Delete All Notifications{" "}
+        </button>
+      </div>
       <div className="max-w-3xl">
         {localNotifications &&
           localNotifications.map((notification) => (
@@ -68,14 +92,23 @@ const NotificationsAlert = ({ notifications }) => {
                 >
                   View bids
                 </Link>
-                {!notification.isRead && (
+                {!notification.isRead ? (
                   <p
                     onClick={() => {
-                      updateNoti(notification._id);
+                      updateNoti(notification._id, "mark-as-read");
                     }}
                     className="text-blue-600 font-medium my-2 underline cursor-pointer"
                   >
                     Mark as read
+                  </p>
+                ) : (
+                  <p
+                    onClick={() => {
+                      updateNoti(notification._id, "delete-notification");
+                    }}
+                    className="text-blue-600 font-medium my-2 underline cursor-pointer"
+                  >
+                    Delete
                   </p>
                 )}
               </div>
