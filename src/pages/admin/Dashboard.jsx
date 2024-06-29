@@ -21,7 +21,7 @@ const reducer = (state, action) => {
     case "TOTAL_SALES":
       return {
         ...state,
-        totalSales: action.products.reduce((acc, curr) => acc + curr.price, 0),
+        totalSales: action.totalPrice,
       };
     case "USERS_COUNT":
       return { ...state, usersCount: action.users.length };
@@ -30,39 +30,69 @@ const reducer = (state, action) => {
   }
 };
 
-const Dashboard = ({ products, users }) => {
+const Dashboard = ({
+  totalProducts,
+  users,
+  products,
+  totalPrice,
+  totalPending,
+  setActiveTabKey,
+}) => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
   useEffect(() => {
-    if (products.length > 0) {
-      dispatch({ type: "TOTAL_SALES", products });
-      dispatch({ type: "USERS_COUNT", users });
+    if (totalPrice > 0) {
+      dispatch({ type: "TOTAL_SALES", totalPrice });
     }
-  }, [products, users]);
+    dispatch({ type: "USERS_COUNT", users });
+  }, [products, users, totalPrice]);
 
   const { totalSales, usersCount } = state;
 
   return (
     <section className="flex flex-col h-full">
-      <div className="flex items-center gap-6 mb-5 mt-2">
-        <Cards
-          title={"Total Sales"}
-          count={`${totalSales} MMK`}
-          icon={BanknotesIcon}
-          note={"MMK"}
-        />
-        <Cards
-          title={"Total Products"}
-          count={products.length}
-          icon={ShoppingCartIcon}
-          note={"Products"}
-        />
-        <Cards
-          title={"Active Users"}
-          count={usersCount}
-          icon={UserGroupIcon}
-          note={"Users"}
-        />
+      <div className="flex items-center gap-4 mb-5 mt-3 flex-wrap">
+        <div className="w-1/2">
+          <Cards
+            title={"Total Sales"}
+            count={`${totalSales} MMK`}
+            icon={BanknotesIcon}
+            note={"MMK"}
+          />
+        </div>
+        <div
+          onClick={() => setActiveTabKey("1")}
+          className="cursor-pointer w-1/3"
+        >
+          <Cards
+            title={"Total Products"}
+            count={totalProducts}
+            icon={ShoppingCartIcon}
+            note={"Products"}
+          />
+        </div>
+        <div
+          onClick={() => setActiveTabKey("2")}
+          className="cursor-pointer w-1/3"
+        >
+          <Cards
+            title={"Active Users"}
+            count={usersCount}
+            icon={UserGroupIcon}
+            note={"Users"}
+          />
+        </div>
+        <div
+          onClick={() => setActiveTabKey("1")}
+          className="cursor-pointer w-1/2"
+        >
+          <Cards
+            title={"Pending Products"}
+            count={totalPending > 0 ? totalPending : "No Pending Products"}
+            icon={ShoppingCartIcon}
+            note={"Products"}
+          />
+        </div>
       </div>
       <div className="flex-1 min-w-[300px] min-h-[300px] h-full">
         <ArenaCharts products={products} />
@@ -73,8 +103,12 @@ const Dashboard = ({ products, users }) => {
 };
 
 Dashboard.propTypes = {
+  totalProducts: PropTypes.number.isRequired,
   products: PropTypes.any.isRequired,
   users: PropTypes.any.isRequired,
+  totalPrice: PropTypes.number.isRequired,
+  totalPending: PropTypes.number.isRequired,
+  setActiveTabKey: PropTypes.func.isRequired,
 };
 
 export default Dashboard;
