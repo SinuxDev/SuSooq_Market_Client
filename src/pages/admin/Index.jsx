@@ -7,9 +7,13 @@ import General from "./General";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import Dashboard from "./Dashboard";
+import { getNotifications } from "../../api/notification";
+import NotificationsAlert from "./NotificationsAlert";
+import { BellAlertIcon } from "@heroicons/react/24/solid";
 
 const Index = () => {
   const { user } = useSelector((state) => state.reducer.user);
+  const [notifications, setNotifications] = useState([]);
   const [activeTabKey, setActiveTabKey] = useState("1");
   const [products, setProducts] = useState([]);
   const [users, setUsers] = useState([]);
@@ -19,6 +23,20 @@ const Index = () => {
       const response = await getAllUsers();
       if (response.isSuccess) {
         setUsers(response.userDocs);
+      } else {
+        throw new Error(response.message);
+      }
+    } catch (err) {
+      message.error(err.message);
+    }
+  }, []);
+
+  const getNoti = useCallback(async () => {
+    try {
+      const response = await getNotifications();
+
+      if (response.isSuccess) {
+        setNotifications(response.notifications);
       } else {
         throw new Error(response.message);
       }
@@ -57,7 +75,8 @@ const Index = () => {
   useEffect(() => {
     getProducts();
     getUsers();
-  }, [activeTabKey, checkIsAdmin, getProducts, getUsers]);
+    getNoti();
+  }, [activeTabKey, checkIsAdmin, getProducts, getUsers, getNoti]);
 
   const items = [
     {
@@ -77,7 +96,19 @@ const Index = () => {
     },
     {
       key: "4",
-      label: "Notifications",
+      label: (
+        <span className="flex items-start gap-2">
+          <BellAlertIcon width={20} />
+          Notifications
+          <span className="text-red-600 italic">
+            {" "}
+            {notifications && notifications.length > 0
+              ? notifications.length
+              : "0"}{" "}
+          </span>
+        </span>
+      ),
+      children: <NotificationsAlert notifications={notifications} />,
     },
     {
       key: "5",
