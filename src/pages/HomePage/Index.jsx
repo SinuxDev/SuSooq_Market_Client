@@ -7,21 +7,28 @@ import { getPublicProducts, getSavedProducts } from "../../api/product";
 import { useSelector, useDispatch } from "react-redux";
 import { setProcessing } from "../../store/slices/loaderSlice";
 import { RotatingLines } from "react-loader-spinner";
+import { Pagination } from "antd";
 
 const Index = () => {
   const [products, setProducts] = useState([]);
   const [savedProducts, setSavedProducts] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [page, setPage] = useState(1);
+  const [perPage, setPerPage] = useState(6);
   const dispatch = useDispatch();
   const { isProcessing } = useSelector((state) => state.reducer.isProcessing);
 
   const fetchProducts = useCallback(
-    async (fetchFunction, setData) => {
+    async (fetchFunction, setData, page = 1, perPage = 6) => {
       dispatch(setProcessing(true));
       try {
-        const response = await fetchFunction();
+        const response = await fetchFunction(page, perPage);
         if (response.isSuccess) {
-          if (setData == setProducts) {
+          if (setData === setProducts) {
             setData(response.products);
+            setCurrentPage(response.currentPage);
+            setTotalPages(response.totalPages);
           } else {
             setData(response.savedProducts);
           }
@@ -38,8 +45,8 @@ const Index = () => {
   );
 
   const getAllPublicProducts = useCallback(
-    () => fetchProducts(getPublicProducts, setProducts),
-    [fetchProducts]
+    () => fetchProducts(getPublicProducts, setProducts, page, perPage),
+    [fetchProducts, page, perPage]
   );
 
   const getSaveProducts = useCallback(
@@ -47,10 +54,22 @@ const Index = () => {
     [fetchProducts]
   );
 
+  const handlePagination = (page, pageSize) => {
+    setPage(page);
+    setPerPage(pageSize);
+  };
+
   useEffect(() => {
     getAllPublicProducts();
+  }, [getAllPublicProducts]);
+
+  useEffect(() => {
     getSaveProducts();
-  }, [getAllPublicProducts, getSaveProducts]);
+  }, [getSaveProducts]);
+
+  useEffect(() => {
+    fetchProducts(getPublicProducts, setProducts, page, perPage);
+  }, [fetchProducts, page, perPage]);
 
   return (
     <>
@@ -82,6 +101,14 @@ const Index = () => {
                 getAllPublicProducts={getAllPublicProducts}
               />
             ))}
+          </div>
+          <div className="flex mt-5 mb-20 justify-end mx-auto max-w-4xl">
+            <Pagination
+              current={currentPage}
+              total={totalPages * perPage}
+              pageSize={perPage}
+              onChange={handlePagination}
+            />
           </div>
         </>
       )}
