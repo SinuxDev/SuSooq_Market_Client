@@ -10,12 +10,16 @@ import { getFilteredProducts } from "../../api/product";
 
 import { useDispatch } from "react-redux";
 import { setProcessing } from "../../store/slices/loaderSlice";
+import { message } from "antd";
 
 const Hero = ({ setProducts, getAllPublicProducts }) => {
   const [searchQuery, setSearchQuery] = useState("");
   const dispatch = useDispatch();
 
   const searchQueryHandler = async () => {
+    if (searchQuery.trim().length === 0) {
+      return message.error("Please enter a value", 3);
+    }
     dispatch(setProcessing(true));
     try {
       const response = await getFilteredProducts("searchQuery", searchQuery);
