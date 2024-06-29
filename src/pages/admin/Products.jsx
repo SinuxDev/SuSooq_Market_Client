@@ -1,13 +1,16 @@
 import PropTypes from "prop-types";
 import moment from "moment";
-import { message } from "antd";
+import { Pagination, message } from "antd";
 import {
   approveProduct,
   rejectProduct,
   rollbackProduct,
 } from "../../api/admin";
+import { useState } from "react";
 
-const Products = ({ products, getProducts }) => {
+const Products = ({ products, getProducts, currentPage, totalPages }) => {
+  const [perPage, setPerPage] = useState(10);
+
   const productApproveHandler = async (productId) => {
     try {
       const response = await approveProduct(productId);
@@ -49,6 +52,11 @@ const Products = ({ products, getProducts }) => {
     } catch (err) {
       message.error(err.message);
     }
+  };
+
+  const handlePagination = (page, perPage) => {
+    setPerPage(perPage);
+    getProducts(page, perPage);
   };
 
   return (
@@ -176,6 +184,14 @@ const Products = ({ products, getProducts }) => {
           </tbody>
         </table>
       </div>
+      <div className="flex mt-5 mb-20 justify-end mx-auto max-w-4xl">
+        <Pagination
+          current={currentPage}
+          total={totalPages * perPage}
+          pageSize={perPage}
+          onChange={handlePagination}
+        />
+      </div>
     </section>
   );
 };
@@ -183,6 +199,8 @@ const Products = ({ products, getProducts }) => {
 Products.propTypes = {
   products: PropTypes.array.isRequired,
   getProducts: PropTypes.func,
+  currentPage: PropTypes.number,
+  totalPages: PropTypes.number,
 };
 
 export default Products;
