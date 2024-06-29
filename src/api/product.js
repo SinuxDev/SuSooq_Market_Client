@@ -59,8 +59,30 @@ export const deleteProductImages = async (payload) => {
   }
 };
 
-// Public Products API
-export const getPublicProducts = async () => FetchProduct("/api/products");
+// Public Products API => Update (Page, PerPage) Panigation for Public Products
+
+// For Public Products Pagination
+const FetchPublicProducts = async (page, perPage, endPoint) => {
+  try {
+    const response = await axiosInstance.get(
+      `${endPoint}?page=${page}&perPage=${perPage}`,
+      {
+        validateStatus: () => true,
+      }
+    );
+    return response.data;
+  } catch (err) {
+    return err.message;
+  }
+};
+
+// Get Public Products
+export const getPublicProducts = async (page, perPage) =>
+  FetchPublicProducts(page, perPage, "/api/products");
+
+// Get Saved Products
+export const getSavedProducts = async (page, perPage) =>
+  FetchPublicProducts(page, perPage, "/save-products");
 
 // Get Single Product Details By ID
 export const getSingleProductDetails = async (id) =>
@@ -69,9 +91,6 @@ export const getSingleProductDetails = async (id) =>
 // Save Product
 export const saveProduct = async (id) =>
   FetchProduct(`/save-products/${id}`, {}, "post");
-
-// Get Saved Products
-export const getSavedProducts = async () => FetchProduct("/save-products");
 
 // Unsave Product
 export const unSaveProduct = async (id) =>
