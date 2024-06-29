@@ -25,3 +25,11 @@ export const getNotifications = () => fetchNotifications("/get-notifications");
 // Mark notification as read
 export const markAsRead = (id) =>
   fetchNotifications(`/mark-as-read/${id}`, {}, "put");
+
+// Delete notification
+export const deleteNotification = (id) =>
+  fetchNotifications(`/delete-notification/${id}`, {}, "delete");
+
+// Delete all notifications
+export const deleteAllNotifications = () =>
+  fetchNotifications("/delete-all-notifications", {}, "delete");
