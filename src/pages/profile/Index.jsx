@@ -42,7 +42,7 @@ const Index = () => {
     } catch (err) {
       message.error(err.message);
     }
-  }, []);
+  }, [setNotifications]);
 
   useEffect(() => {
     if (activeTabKey === "1") {
@@ -50,8 +50,11 @@ const Index = () => {
       setEditProductId(null);
     }
     getProducts();
+  }, [getProducts, activeTabKey]);
+
+  useEffect(() => {
     getNoti();
-  }, [getProducts, activeTabKey, getNoti]);
+  }, [getNoti, notifications]);
 
   const items = [
     {
