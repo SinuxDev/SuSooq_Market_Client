@@ -41,14 +41,21 @@ const Index = () => {
       const response = await getNotifications();
 
       if (response.isSuccess) {
-        setNotifications(response.notifications);
+        // Check if notifications have actually changed before updating state
+        if (
+          JSON.stringify(notifications) !==
+          JSON.stringify(response.notifications)
+        ) {
+          setNotifications(response.notifications);
+          message.success(response.message);
+        }
       } else {
         throw new Error(response.message);
       }
     } catch (err) {
       message.error(err.message);
     }
-  }, [setNotifications]);
+  }, [notifications]);
 
   const navigate = useNavigate();
 
@@ -89,7 +96,7 @@ const Index = () => {
 
   useEffect(() => {
     getNoti();
-  }, [notifications, getNoti]);
+  }, [getNoti]);
 
   const items = [
     {
