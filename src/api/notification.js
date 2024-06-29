@@ -21,3 +21,7 @@ export const pushNotification = (payload) =>
 
 // Get all notifications
 export const getNotifications = () => fetchNotifications("/get-notifications");
+
+// Mark notification as read
+export const markAsRead = (id) =>
+  fetchNotifications(`/mark-as-read/${id}`, {}, "put");
