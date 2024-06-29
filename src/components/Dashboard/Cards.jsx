@@ -4,7 +4,7 @@ import { Card, Badge, Text, Metric } from "@tremor/react";
 
 const Cards = ({ title, count, icon, note }) => {
   return (
-    <Card className="mx-auto max-w-sm mt-4">
+    <Card className="mx-auto max-w-xl mt-4">
       <div className="flex items-center justify-between">
         <Text className="text-tremor-default text-tremor-content dark:text-dark-tremor-content">
           {title}
