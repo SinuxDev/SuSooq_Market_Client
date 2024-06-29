@@ -11,8 +11,24 @@ const adminFetchEntities = async (endpoint) => {
   }
 };
 
+// FetchAdminEntities  [Pagination API]
+const fetchAdminentities = async (endpoint, page, perPage) => {
+  try {
+    const response = await axiosInstance.get(
+      `/admin/${endpoint}?page=${page}&perPage=${perPage}`,
+      {
+        validateStatus: () => true,
+      }
+    );
+    return response.data;
+  } catch (err) {
+    return err.message;
+  }
+};
+
 // Get All Products API
-export const getAllProducts = () => adminFetchEntities("products");
+export const getAllProducts = (page, perPage) =>
+  fetchAdminentities("products", page, perPage);
 
 // Get All Users API
 export const getAllUsers = () => adminFetchEntities("users");
