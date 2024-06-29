@@ -313,7 +313,7 @@ const Details = () => {
                     </p>
                   </Link>
                 )}
-                {user._id === product.seller._id && (
+                {user?._id === product.seller._id && (
                   <p className="my-5 font-bold text-2xl text-center text-red-600">
                     You cannot bid your own product
                   </p>
