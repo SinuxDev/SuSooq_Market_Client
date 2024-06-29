@@ -11,10 +11,11 @@ import { BellAlertIcon } from "@heroicons/react/24/solid";
 const Index = () => {
   const [activeTabKey, setActiveTabKey] = useState("1");
   const [products, setProducts] = useState([]);
-  const [notifications, setNotifications] = useState([]);
   const [editMode, setEditMode] = useState(false);
   const [editProductId, setEditProductId] = useState(null);
   const [manageTabKey, setManageTabKey] = useState("1");
+  const [unreadNoti, setUnreadNoti] = useState([]);
+  const [notifications, setNotifications] = useState([]);
 
   const getProducts = useCallback(async () => {
     try {
@@ -35,13 +36,14 @@ const Index = () => {
       const response = await getNotifications();
 
       if (response.isSuccess) {
-        // Check if notifications have actually changed before updating state
-        if (
-          JSON.stringify(notifications) !==
-          JSON.stringify(response.notifications)
-        ) {
-          setNotifications(response.notifications);
-          message.success(response.message);
+        // Filter out unread notifications
+        const ResunreadNotifications = response.notifications.filter(
+          (notification) => !notification.isRead
+        );
+        setUnreadNoti(ResunreadNotifications);
+        setNotifications(response.notifications);
+        if (ResunreadNotifications.length > 0) {
+          message.info("You have unread notifications");
         }
       } else {
         throw new Error(response.message);
@@ -49,7 +51,7 @@ const Index = () => {
     } catch (err) {
       message.error(err.message);
     }
-  }, [notifications]);
+  }, []);
 
   useEffect(() => {
     if (activeTabKey === "1") {
@@ -99,9 +101,7 @@ const Index = () => {
           Notifications
           <span className="text-red-600 italic">
             {" "}
-            {notifications && notifications.length > 0
-              ? notifications.length
-              : "0"}{" "}
+            {unreadNoti && unreadNoti.length > 0 ? unreadNoti.length : "0"}{" "}
           </span>
         </span>
       ),
