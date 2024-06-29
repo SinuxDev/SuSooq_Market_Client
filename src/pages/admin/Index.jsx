@@ -17,6 +17,11 @@ const Index = () => {
   const [activeTabKey, setActiveTabKey] = useState("1");
   const [products, setProducts] = useState([]);
   const [users, setUsers] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [totalProducts, setTotalProducts] = useState(0);
+  const [totalPrice, setTotalPrice] = useState(0);
+  const [totalPending, setTotalPending] = useState(0);
 
   const getUsers = useCallback(async () => {
     try {
@@ -43,7 +48,7 @@ const Index = () => {
     } catch (err) {
       message.error(err.message);
     }
-  }, []);
+  }, [setNotifications]);
 
   const navigate = useNavigate();
 
@@ -51,11 +56,16 @@ const Index = () => {
     setActiveTabKey(key);
   };
 
-  const getProducts = useCallback(async () => {
+  const getProducts = useCallback(async (page = 1, perPage = 10) => {
     try {
-      const response = await getAllProducts();
+      const response = await getAllProducts(page, perPage);
       if (response.isSuccess) {
         setProducts(response.products);
+        setCurrentPage(response.currentPage);
+        setTotalPages(response.totalPages);
+        setTotalProducts(response.totalProducts);
+        setTotalPrice(response.totalPrice);
+        setTotalPending(response.pendingProducts);
       } else {
         throw new Error(response.message);
       }
@@ -75,14 +85,24 @@ const Index = () => {
   useEffect(() => {
     getProducts();
     getUsers();
+  }, [activeTabKey, checkIsAdmin, getProducts, getUsers]);
+
+  useEffect(() => {
     getNoti();
-  }, [activeTabKey, checkIsAdmin, getProducts, getUsers, getNoti]);
+  }, [notifications, getNoti]);
 
   const items = [
     {
       key: "1",
       label: "Manage Products",
-      children: <Products products={products} getProducts={getProducts} />,
+      children: (
+        <Products
+          products={products}
+          getProducts={getProducts}
+          currentPage={currentPage}
+          totalPages={totalPages}
+        />
+      ),
     },
     {
       key: "2",
@@ -92,7 +112,16 @@ const Index = () => {
     {
       key: "3",
       label: "Dashboard",
-      children: <Dashboard products={products} users={users} />,
+      children: (
+        <Dashboard
+          products={products}
+          users={users}
+          totalProducts={totalProducts}
+          totalPrice={totalPrice}
+          totalPending={totalPending}
+          setActiveTabKey={setActiveTabKey}
+        />
+      ),
     },
     {
       key: "4",
