@@ -26,7 +26,7 @@ const store = configureStore({
     getDefaultMiddleware({
       serializableCheck: false,
     }),
-  devTools: false,
+  devTools: import.meta.env.VITE_MODE === "development" ? true : false,
 });
 
 export default store;
