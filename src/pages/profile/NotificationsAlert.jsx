@@ -56,13 +56,15 @@ const NotificationsAlert = ({ notifications }) => {
     <section>
       <div className="flex items-center justify-between">
         <h1 className="text-3xl font-semibold my-2">Notifications</h1>
-        <button
-          className="bg-blue-600 text-white p-2 rounded-lg"
-          onClick={() => updateNoti("", "delete-all-notifications")}
-        >
-          {" "}
-          Delete All Notifications{" "}
-        </button>
+        {localNotifications.length > 0 && (
+          <button
+            className="bg-blue-600 text-white p-2 rounded-lg"
+            onClick={() => updateNoti("", "delete-all-notifications")}
+          >
+            {" "}
+            Delete All Notifications{" "}
+          </button>
+        )}
       </div>
       <div className="max-w-3xl">
         {localNotifications &&
