@@ -21,11 +21,14 @@ const Nav = () => {
   };
 
   return (
-    <nav className=" flex items-center justify-between text-blue-600 py-4 mb-4">
-      <Link className="font-bold text-2xl" to={"/"}>
+    <nav className="min-300px:mx-12 min-400px:mx-12 mb-4 flex items-center justify-between py-4 text-blue-600 sm:mx-12 md:mx-14">
+      <Link
+        className="min-300px:text-sm min-400px:text-lg text-2xl font-bold"
+        to={"/"}
+      >
         SuSooq.IO
       </Link>
-      <div className="flex items-center gap-3 font-semibold text-lg">
+      <div className="hidden items-center gap-3 text-lg font-semibold md:flex">
         <Link to={"/about"}> About </Link>
         <Link to={"/contact"}> Contact </Link>
         <Link to={"/askQuestions"}> Ask Questions </Link>
@@ -33,13 +36,13 @@ const Nav = () => {
       {user ? (
         <div className="flex items-center gap-2">
           {user.role === "user" && (
-            <Link to={"/profile"} className=" px-2 py-1 flex items-end gap-1">
+            <Link to={"/profile"} className="flex items-end gap-1 px-2 py-1">
               {" "}
               <UserIcon width={25} />
             </Link>
           )}
           {user.role === "admin" && (
-            <Link to={"/admin"} className=" px-2 py-1 flex items-end gap-1">
+            <Link to={"/admin"} className="flex items-end gap-1 px-2 py-1">
               {" "}
               <UserIcon width={25} /> Admin Panel
             </Link>
@@ -47,7 +50,7 @@ const Nav = () => {
           {
             <Link
               to={"/save-products"}
-              className=" px-2 py-1 flex items-end gap-1"
+              className="flex items-end gap-1 px-2 py-1"
             >
               {" "}
               <BookmarkIcon width={25} />
@@ -62,7 +65,7 @@ const Nav = () => {
           }
         </div>
       ) : (
-        <div className=" flex items-center gap-3 text-base font-medium">
+        <div className="min-300px:text-sm min-400px:text-lg flex items-center gap-3 text-base font-medium">
           <Link to={"/login"}>Login</Link>
           <Link to={"/register"}>Register</Link>
         </div>
