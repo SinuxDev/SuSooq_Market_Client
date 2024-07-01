@@ -1,6 +1,8 @@
-import Hero from "../../components/HomePage/Hero";
-import Filter from "../../components/HomePage/Filter";
-import Cards from "../../components/HomePage/Cards";
+import { Suspense, lazy } from "react";
+
+const Hero = lazy(() => import("../../components/HomePage/Hero"));
+const Filter = lazy(() => import("../../components/HomePage/Filter"));
+const Cards = lazy(() => import("../../components/HomePage/Cards"));
 import { useCallback, useEffect, useState } from "react";
 import { getPublicProducts, getSavedProducts } from "../../api/product";
 
@@ -41,17 +43,17 @@ const Index = () => {
         dispatch(setProcessing(false));
       }
     },
-    [dispatch]
+    [dispatch],
   );
 
   const getAllPublicProducts = useCallback(
     () => fetchProducts(getPublicProducts, setProducts, page, perPage),
-    [fetchProducts, page, perPage]
+    [fetchProducts, page, perPage],
   );
 
   const getSaveProducts = useCallback(
     () => fetchProducts(getSavedProducts, setSavedProducts),
-    [fetchProducts]
+    [fetchProducts],
   );
 
   const handlePagination = (page, pageSize) => {
@@ -73,45 +75,47 @@ const Index = () => {
 
   return (
     <>
-      <Hero
-        setProducts={setProducts}
-        getAllPublicProducts={getAllPublicProducts}
-      />
-      {isProcessing ? (
-        <div className="flex items-center justify-center">
-          <RotatingLines
-            visible={isProcessing}
-            height="96"
-            width="96"
-            color="blue"
-            strokeWidth="5"
-            animationDuration="0.75"
-            ariaLabel="rotating-lines-loading"
-          />
-        </div>
-      ) : (
-        <>
-          <Filter products={products} setProducts={setProducts} />
-          <div className="flex max-w-4xl flex-wrap mx-auto flex-row">
-            {products.map((product) => (
-              <Cards
-                key={product._id}
-                product={product}
-                savedProducts={savedProducts}
-                getAllPublicProducts={getAllPublicProducts}
-              />
-            ))}
-          </div>
-          <div className="flex mt-5 mb-20 justify-end mx-auto max-w-4xl">
-            <Pagination
-              current={currentPage}
-              total={totalPages * perPage}
-              pageSize={perPage}
-              onChange={handlePagination}
+      <Suspense>
+        <Hero
+          setProducts={setProducts}
+          getAllPublicProducts={getAllPublicProducts}
+        />
+        {isProcessing ? (
+          <div className="flex items-center justify-center">
+            <RotatingLines
+              visible={isProcessing}
+              height="96"
+              width="96"
+              color="blue"
+              strokeWidth="5"
+              animationDuration="0.75"
+              ariaLabel="rotating-lines-loading"
             />
           </div>
-        </>
-      )}
+        ) : (
+          <>
+            <Filter products={products} setProducts={setProducts} />
+            <div className="mx-auto flex max-w-4xl flex-row flex-wrap">
+              {products.map((product) => (
+                <Cards
+                  key={product._id}
+                  product={product}
+                  savedProducts={savedProducts}
+                  getAllPublicProducts={getAllPublicProducts}
+                />
+              ))}
+            </div>
+            <div className="mx-auto mb-20 mt-5 flex max-w-4xl justify-end">
+              <Pagination
+                current={currentPage}
+                total={totalPages * perPage}
+                pageSize={perPage}
+                onChange={handlePagination}
+              />
+            </div>
+          </>
+        )}
+      </Suspense>
     </>
   );
 };
