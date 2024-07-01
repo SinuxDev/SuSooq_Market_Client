@@ -13,6 +13,15 @@ export default {
     transparent: "transparent",
     current: "currentColor",
     extend: {
+      screens: {
+        sm: "640px",
+        md: "768px",
+        lg: "1024px",
+        xl: "1280px",
+
+        "min-300px": "300px",
+        "min-400px": "400px",
+      },
       colors: {
         // light mode
         tremor: {
