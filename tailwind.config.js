@@ -21,6 +21,10 @@ export default {
 
         "min-300px": "300px",
         "min-400px": "400px",
+        "max-900px": "900px",
+        "max-700px": "700px",
+        "max-800px": "800px",
+        "max-300px": "300px",
       },
       colors: {
         // light mode
