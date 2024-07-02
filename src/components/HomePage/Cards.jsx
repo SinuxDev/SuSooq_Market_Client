@@ -45,10 +45,12 @@ const Cards = ({
 
   return (
     <>
-      <div className={`${saved ? "basis-1/3" : "basis-1/2"} px-4 mb-6`}>
+      <div
+        className={`${saved ? "basis-1/3" : "basis-1/2"} mx-auto mb-6 px-4 max-300px:basis-9/12 max-300px:max-sm:mx-auto max-700px:max-lg:mx-auto max-700px:max-lg:basis-7/12 max-700px:max-lg:px-14 lg:basis-1/2`}
+      >
         <Card
           hoverable
-          className="rounded-lg overflow-hidden shadow-lg"
+          className="overflow-hidden rounded-lg shadow-lg"
           cover={
             <Link to={`/products/${product._id}`}>
               <img
@@ -58,58 +60,67 @@ const Cards = ({
                     : SImage
                 }
                 alt={product.name}
-                className="w-full h-56 object-cover"
+                className="h-56 w-full object-cover"
               />
             </Link>
           }
         >
-          <Link to={`/products/${product._id}`}>
-            <p className="text-white text-sm bg-blue-600 rounded-lg p-2 w-fit my-2">
-              {" "}
-              {product.category.toUpperCase().replace("_", " ")}{" "}
-            </p>
-          </Link>
           <div className="flex items-center justify-between">
-            <p className="text-xl font-bold">{product.name}</p>
-            <p className="text-lg font-semibold"> Price : $ {product.price} </p>
-
-            {user && (
-              <>
-                {saved ? (
-                  <BookmarkSlashIcon
-                    width={20}
-                    height={20}
-                    className="text-blue-600 cursor-pointer"
-                    onClick={(event) => {
-                      event.stopPropagation();
-                      UnSavedProductHandler(product._id);
-                    }}
-                  />
-                ) : (
-                  <>
-                    {isProductSaved(product) ? (
-                      <Bookmark
-                        width={20}
-                        height={20}
-                        className="text-blue-600 cursor-pointer"
-                        onClick={() => message.info("Product already saved")}
-                      />
-                    ) : (
-                      <BookmarkIcon
-                        width={20}
-                        height={20}
-                        className="text-blue-600 cursor-pointer"
-                        onClick={(event) => {
-                          event.stopPropagation();
-                          savedProductHandler(product._id);
-                        }}
-                      />
-                    )}
-                  </>
-                )}
-              </>
-            )}
+            <Link to={`/products/${product._id}`}>
+              <p className="my-2 w-fit rounded-lg bg-blue-600 p-2 text-sm text-white max-300px:max-md:text-xs">
+                {" "}
+                {product.category.toUpperCase().replace("_", " ")}{" "}
+              </p>
+            </Link>
+            <div>
+              {user && (
+                <>
+                  {saved ? (
+                    <BookmarkSlashIcon
+                      width={20}
+                      height={20}
+                      className="max- cursor-pointer text-blue-600 max-300px:max-md:h-7 max-300px:max-md:w-5"
+                      onClick={(event) => {
+                        event.stopPropagation();
+                        UnSavedProductHandler(product._id);
+                      }}
+                    />
+                  ) : (
+                    <>
+                      {isProductSaved(product) ? (
+                        <Bookmark
+                          width={20}
+                          height={20}
+                          className="cursor-pointer text-blue-600 max-300px:max-md:h-7 max-300px:max-md:w-5"
+                          onClick={() => message.info("Product already saved")}
+                        />
+                      ) : (
+                        <BookmarkIcon
+                          width={20}
+                          height={20}
+                          className="cursor-pointer text-blue-600 max-300px:max-md:h-7 max-300px:max-md:w-5"
+                          onClick={(event) => {
+                            event.stopPropagation();
+                            savedProductHandler(product._id);
+                          }}
+                        />
+                      )}
+                    </>
+                  )}
+                </>
+              )}
+            </div>
           </div>
+          <div className="flex items-center justify-between max-300px:flex-wrap">
+            <p className="text-xl font-bold max-300px:max-md:text-base">
+              {product.name}
+            </p>
+            <p className="text-lg font-semibold max-300px:max-md:text-base">
+              {" "}
+              Price : $ {product.price}{" "}
+            </p>
+          </div>
+
           <Link to={`/products/${product._id}`}>
             <p className="italic">{product.description.slice(0, 80)} </p>
           </Link>
