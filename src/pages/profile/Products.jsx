@@ -40,10 +40,10 @@ const Products = ({
 
   return (
     <section>
-      <h1 className="text-3xl font-semibold my-2 text-center">Products List</h1>
+      <h1 className="my-2 text-center text-3xl font-semibold">Products List</h1>
       <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
-        <table className="w-full text-sm text-left rtl:text-right text-gray-500 ">
-          <thead className="text-xs text-gray-700 uppercase bg-gray-50 text-center ">
+        <table className="w-full text-left text-sm text-gray-500 rtl:text-right">
+          <thead className="bg-gray-50 text-center text-xs uppercase text-gray-700">
             <tr>
               <th scope="col" className="px-6 py-3 text-left">
                 Product name
@@ -67,12 +67,12 @@ const Products = ({
               <>
                 {products.map((product) => (
                   <tr
-                    className="odd:bg-white  even:bg-gray-50  border-b "
+                    className="border-b odd:bg-white even:bg-gray-50"
                     key={product._id}
                   >
                     <th
                       scope="row"
-                      className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap text-left "
+                      className="whitespace-nowrap px-6 py-4 text-left font-medium text-gray-900"
                     >
                       {product.name}
                     </th>
@@ -84,18 +84,18 @@ const Products = ({
                     <td className="px-6 py-4">
                       {" "}
                       {product.status === "pending" && (
-                        <span className="bg-yellow-400 text-xs p-1 rounded-md text-white">
+                        <span className="rounded-md bg-yellow-400 p-1 text-xs text-white">
                           {product.status}
                         </span>
                       )}
                       {product.status === "approved" && (
-                        <span className="bg-green-600 text-xs p-1 rounded-md text-white">
+                        <span className="rounded-md bg-green-600 p-1 text-xs text-white">
                           {" "}
                           {product.status}{" "}
                         </span>
                       )}
                       {product.status === "rejected" && (
-                        <span className="bg-red-600 text-xs p-1 rounded-md text-white">
+                        <span className="rounded-md bg-red-600 p-1 text-xs text-white">
                           {" "}
                           {product.status}{" "}
                         </span>
@@ -104,7 +104,7 @@ const Products = ({
                     <td className="px-6 py-4">
                       <button
                         type="button"
-                        className="font-medium text-green-600  hover:underline me-4"
+                        className="me-4 font-medium text-green-600 hover:underline"
                         onClick={() => {
                           uploadButtonHandler(product._id);
                         }}
@@ -113,7 +113,7 @@ const Products = ({
                       </button>
                       <button
                         type="button"
-                        className="font-medium text-blue-600  hover:underline me-4"
+                        className="me-4 font-medium text-blue-600 hover:underline"
                         onClick={() => {
                           editButtonHandler(product._id);
                         }}
@@ -122,7 +122,7 @@ const Products = ({
                       </button>
                       <button
                         type="button"
-                        className="font-medium text-red-500  hover:underline"
+                        className="font-medium text-red-500 hover:underline"
                         onClick={() => {
                           deleteButtonHandler(product._id);
                         }}
@@ -135,7 +135,7 @@ const Products = ({
               </>
             ) : (
               <tr>
-                <td colSpan="5" className="text-center py-4">
+                <td colSpan="5" className="py-4 text-center">
                   No products found
                 </td>
               </tr>
